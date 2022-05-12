@@ -133,7 +133,7 @@ const CreatedBy = tw.div`
     justify-center
     items-center
     mt-6
-    font-bold
+    border-t
 `;
 
 export default function Enter() {
