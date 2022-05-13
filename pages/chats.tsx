@@ -1,4 +1,5 @@
 import tw from "tailwind-styled-components";
+import Layout from "../components/layout";
 
 const Wrapper = tw.div`
   mt-16
@@ -42,18 +43,20 @@ const Content = tw.span`
 
 export default function Chat() {
   return (
-    <Wrapper>
-      {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-        <ChatContainer key={i}>
-          <AvatarContainer>
-            <Avater />
-          </AvatarContainer>
-          <MainContainer>
-            <UserName>Jungyu</UserName>
-            <Content>How are You!</Content>
-          </MainContainer>
-        </ChatContainer>
-      ))}
-    </Wrapper>
+    <Layout title="채팅" isLogIn canGoBack={false} hasTabBar>
+      <Wrapper>
+        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+          <ChatContainer key={i}>
+            <AvatarContainer>
+              <Avater />
+            </AvatarContainer>
+            <MainContainer>
+              <UserName>Jungyu</UserName>
+              <Content>How are You!</Content>
+            </MainContainer>
+          </ChatContainer>
+        ))}
+      </Wrapper>
+    </Layout>
   );
 }
