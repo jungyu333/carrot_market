@@ -77,7 +77,7 @@ const NewProduct = tw.div`
   bottom-10
   right-6
   transition-colors
-  shadow-xl
+  shadow-sm
   text-white
 `;
 

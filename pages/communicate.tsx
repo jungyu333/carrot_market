@@ -2,11 +2,13 @@ import tw from "tailwind-styled-components";
 
 const Wrapper = tw.div`
   mt-10
+  px-2
+  relative
 `;
 
 const PostContainer = tw.div`
   px-4
-  py-4
+  py-5
   border-b
   flex
   items-center
@@ -69,6 +71,25 @@ const CommentContainer = tw.div`
 const Comment = tw.span`
   text-sm
 `;
+
+const NewProduct = tw.div`
+  border
+  h-14 
+  w-14
+  rounded-full
+  p-1
+  flex
+  items-center
+  justify-center
+  bg-orange-400
+  hover:bg-orange-500
+  fixed
+  bottom-10
+  right-6
+  transition-colors
+  shadow-sm
+  text-white
+`;
 export default function Communicate() {
   return (
     <Wrapper>
@@ -101,6 +122,22 @@ export default function Communicate() {
               </CommentContainer>
             </PostSubInfoContainer>
           </PostContainer>
+          <NewProduct>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+              />
+            </svg>
+          </NewProduct>
         </>
       ))}
     </Wrapper>
