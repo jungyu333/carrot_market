@@ -1,5 +1,6 @@
+import Link from "next/link";
 import tw from "tailwind-styled-components";
-import Layout from "../components/layout";
+import Layout from "../../components/layout";
 
 const Wrapper = tw.div`
   mt-16
@@ -60,7 +61,7 @@ const PostSubInfoContainer = tw.div`
 
 const Time = tw.span`
   text-gray-400
-  text-md
+  text-sm
 `;
 
 const CommentContainer = tw.div`
@@ -90,6 +91,7 @@ const NewProduct = tw.div`
   transition-colors
   shadow-sm
   text-white
+  cursor-pointer
 `;
 export default function Communicate() {
   return (
@@ -124,22 +126,24 @@ export default function Communicate() {
                 </CommentContainer>
               </PostSubInfoContainer>
             </PostContainer>
-            <NewProduct>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                />
-              </svg>
-            </NewProduct>
+            <Link href="/communicate/write">
+              <NewProduct>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
+                  />
+                </svg>
+              </NewProduct>
+            </Link>
           </>
         ))}
       </Wrapper>

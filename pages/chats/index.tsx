@@ -1,5 +1,5 @@
 import tw from "tailwind-styled-components";
-import Layout from "../components/layout";
+import Layout from "../../components/layout";
 
 const Wrapper = tw.div`
   mt-16
