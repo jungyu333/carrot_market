@@ -1,4 +1,5 @@
 import type { NextPage } from "next";
+import Link from "next/link";
 import tw from "tailwind-styled-components";
 import Layout from "../components/layout";
 
@@ -80,6 +81,7 @@ const NewProduct = tw.div`
   transition-colors
   shadow-sm
   text-white
+  cursor-pointer
 `;
 
 const Home: NextPage = () => {
@@ -119,22 +121,24 @@ const Home: NextPage = () => {
             </ProductSubInfoContainer>
           </ProductContainer>
         ))}
-        <NewProduct>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-10 w-10 text-center"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth="2"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
-        </NewProduct>
+        <Link href="/items/newItem">
+          <NewProduct>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-10 w-10 text-center"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M12 4v16m8-8H4"
+              />
+            </svg>
+          </NewProduct>
+        </Link>
       </Wrapper>
     </Layout>
   );

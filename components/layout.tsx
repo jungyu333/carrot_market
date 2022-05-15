@@ -74,7 +74,8 @@ const HomeContainer = tw.div<TabIconProps>`
   items-center
   space-y-1
   cursor-pointer
-  ${(p) => (p.$isRouterMatch === "/" ? "text-orange-400" : "text-gray-400")}
+  ${(p: TabIconProps) =>
+    p.$isRouterMatch === "/" ? "text-orange-400" : "text-gray-400"}
 `;
 
 const CommunityContainer = tw.div<TabIconProps>`
@@ -84,7 +85,7 @@ const CommunityContainer = tw.div<TabIconProps>`
   items-center
   space-y-1
   cursor-pointer
-  ${(p) =>
+  ${(p: TabIconProps) =>
     p.$isRouterMatch === "/communicate" ? "text-orange-400" : "text-gray-400"}
 `;
 
@@ -95,7 +96,7 @@ const ChatContainer = tw.div<TabIconProps>`
   items-center
   space-y-1
   cursor-pointer
-  ${(p) =>
+  ${(p: TabIconProps) =>
     p.$isRouterMatch === "/chats" ? "text-orange-400" : "text-gray-400"}
 `;
 
@@ -106,7 +107,7 @@ const UserContainer = tw.div<TabIconProps>`
   items-center
   space-y-1
   cursor-pointer
-  ${(p) =>
+  ${(p: TabIconProps) =>
     p.$isRouterMatch === "/profile" ? "text-orange-400" : "text-gray-400"}
 `;
 
