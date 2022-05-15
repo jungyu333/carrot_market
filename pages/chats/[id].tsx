@@ -72,7 +72,6 @@ const Input = tw.input`
   w-full
   mx-auto
   rounded-md
-  border-gray-200
   focus:ring-orange-500
   focus:border-orange-500
   border-gray-400

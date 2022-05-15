@@ -1,5 +1,6 @@
+import Link from "next/link";
 import tw from "tailwind-styled-components";
-import Layout from "../components/layout";
+import Layout from "../../components/layout";
 
 const Wrapper = tw.div`
   mt-16
@@ -147,7 +148,9 @@ export default function Profile() {
           </AvatarContainer>
           <UserInfo>
             <UserName>jungyu</UserName>
-            <Edit>Edit Profile</Edit>
+            <Link href="/profile/edit">
+              <Edit>Edit Profile</Edit>
+            </Link>
           </UserInfo>
         </UserWrapper>
         <ListWrapper>
