@@ -1,5 +1,6 @@
 import tw from "tailwind-styled-components";
 import Layout from "../../components/layout";
+import SubmitButton from "../../components/submitButton";
 
 const Wrapper = tw.div`
   mt-20
@@ -139,6 +140,7 @@ export default function Edit() {
           <IntroduceLabel htmlFor="introduce">Introduce</IntroduceLabel>
           <TextArea id="introduce" rows={6} />
         </IntroduceContainer>
+        <SubmitButton text="Edit Profile" />
       </Wrapper>
     </Layout>
   );

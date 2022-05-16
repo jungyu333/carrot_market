@@ -1,5 +1,6 @@
 import tw from "tailwind-styled-components";
 import Layout from "../../components/layout";
+import SubmitButton from "../../components/submitButton";
 
 const Wrapper = tw.div`
   mt-16
@@ -96,15 +97,6 @@ const TextArea = tw.textarea`
   focus:border-orange-500
 `;
 
-const UploadButton = tw.button`
-  border
-  w-full
-  py-3
-  rounded-md
-  bg-orange-500
-  text-white
-  hover:bg-orange-600
-`;
 export default function NewItem() {
   return (
     <Layout title="물건 등록" canGoBack isLogIn hasTabBar={false}>
@@ -153,7 +145,7 @@ export default function NewItem() {
           </div>
         </DescriptionContainer>
 
-        <UploadButton>Upload Item</UploadButton>
+        <SubmitButton text="Upload Item" />
       </Wrapper>
     </Layout>
   );

@@ -1,5 +1,6 @@
 import tw from "tailwind-styled-components";
 import Layout from "../../components/layout";
+import SubmitButton from "../../components/submitButton";
 
 const Wrapper = tw.div`
   mt-20
@@ -52,15 +53,6 @@ const ButtonContainer = tw.div`
   mt-8
 `;
 
-const Button = tw.button`
-  border
-  w-full
-  py-3
-  rounded-md
-  bg-orange-500
-  text-white
-  hover:bg-orange-600
-`;
 export default function WritePost() {
   return (
     <Layout canGoBack title="새 글 작성" isLogIn hasTabBar={false}>
@@ -74,7 +66,7 @@ export default function WritePost() {
           <TextArea rows={6} placeholder="Create Post" />
         </MainContainer>
         <ButtonContainer>
-          <Button>Create a Post!</Button>
+          <SubmitButton text="Create a Post" />
         </ButtonContainer>
       </Wrapper>
     </Layout>

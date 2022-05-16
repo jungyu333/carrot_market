@@ -1,3 +1,5 @@
+import { NextPage } from "next";
+import Link from "next/link";
 import tw from "tailwind-styled-components";
 import Layout from "../../components/layout";
 
@@ -42,22 +44,26 @@ const Content = tw.span`
   text-gray-400
 `;
 
-export default function Chat() {
+const Chats: NextPage = () => {
   return (
     <Layout title="채팅" isLogIn canGoBack={false} hasTabBar>
       <Wrapper>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-          <ChatContainer key={i}>
-            <AvatarContainer>
-              <Avater />
-            </AvatarContainer>
-            <MainContainer>
-              <UserName>Jungyu</UserName>
-              <Content>How are You!</Content>
-            </MainContainer>
-          </ChatContainer>
+          <Link key={i} href={`/chats/${i}`}>
+            <ChatContainer key={i}>
+              <AvatarContainer>
+                <Avater />
+              </AvatarContainer>
+              <MainContainer>
+                <UserName>Jungyu</UserName>
+                <Content>How are You!</Content>
+              </MainContainer>
+            </ChatContainer>
+          </Link>
         ))}
       </Wrapper>
     </Layout>
   );
-}
+};
+
+export default Chats;

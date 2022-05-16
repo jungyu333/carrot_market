@@ -1,6 +1,7 @@
 import mitt from "next/dist/shared/lib/mitt";
 import { useState } from "react";
 import tw from "tailwind-styled-components";
+import SubmitButton from "../components/submitButton";
 
 const Wrapper = tw.div`
   mt-16
@@ -110,21 +111,7 @@ const PhoneInput = tw.input`
 `;
 
 const SubmitButtonContainer = tw.div`
-  mt-20
-`;
-
-const SubmitButton = tw.button`
-  text-center
-  bg-orange-500
-  text-orange-200
-  w-full
-  border-2
-  py-3
-  rounded-md
-  focus:outline-none
-  focus:ring-2
-  focus:ring-orange-500
-  hover:text-white
+    mt-16
 `;
 
 const CreatedBy = tw.div`
@@ -166,7 +153,7 @@ export default function Enter() {
         <InputContainer>
           {method === "email" ? (
             <EmailInput
-              autocomplete="off"
+              autoComplete="off"
               placeholder="Input Your Email!"
               type="email"
               required
@@ -183,10 +170,10 @@ export default function Enter() {
         </InputContainer>
         <SubmitButtonContainer>
           {method === "email" ? (
-            <SubmitButton>Log In By Email!</SubmitButton>
+            <SubmitButton text="Enter With Email!" />
           ) : null}
           {method === "phone" ? (
-            <SubmitButton>Log In By Phone!</SubmitButton>
+            <SubmitButton text="Enter With Phone Number!" />
           ) : null}
         </SubmitButtonContainer>
       </FormWrapper>

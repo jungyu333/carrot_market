@@ -5,9 +5,9 @@ import tw from "tailwind-styled-components";
 
 interface LayoutProps {
   title: string;
-  canGoBack: boolean;
-  hasTabBar: boolean;
-  isLogIn: boolean;
+  canGoBack?: boolean;
+  hasTabBar?: boolean;
+  isLogIn?: boolean;
   children: React.ReactNode;
 }
 
