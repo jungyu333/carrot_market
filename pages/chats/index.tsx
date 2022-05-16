@@ -3,6 +3,7 @@ import Layout from "../../components/layout";
 
 const Wrapper = tw.div`
   mt-16
+  mb-20
 `;
 
 const ChatContainer = tw.div`

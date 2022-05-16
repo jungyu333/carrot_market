@@ -4,6 +4,7 @@ import Layout from "../../components/layout";
 
 const Wrapper = tw.div`
   mt-16
+  mb-20
   px-2
   relative
 `;
