@@ -2,6 +2,7 @@ import tw from "tailwind-styled-components";
 import Input from "../../components/Input";
 import Layout from "../../components/layout";
 import SubmitButton from "../../components/submitButton";
+import TextArea from "../../components/textArea";
 
 const Wrapper = tw.div`
   mt-20
@@ -42,20 +43,6 @@ const InputContainer = tw.div`
   space-y-2
 `;
 
-const IntroduceLabel = tw.label`
-  font-bold
-  text-gray-700
-  text-lg
-  cursor-pointer
-`;
-
-const TextArea = tw.textarea`
-  w-full
-  rounded-md
-  focus:ring-orange-500
-  focus:border-orange-500
-`;
-
 export default function Edit() {
   return (
     <Layout canGoBack title="내 정보" hasTabBar={false} isLogIn={false}>
@@ -75,8 +62,7 @@ export default function Edit() {
           <Input type="phone" label="Phone Number" labelBold />
         </InputContainer>
         <InputContainer>
-          <IntroduceLabel htmlFor="introduce">Introduce</IntroduceLabel>
-          <TextArea id="introduce" rows={6} />
+          <TextArea placeholder="Introduce" label="Introduce" />
         </InputContainer>
         <SubmitButton text="Edit Profile" />
       </Wrapper>

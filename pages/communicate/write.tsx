@@ -2,6 +2,7 @@ import tw from "tailwind-styled-components";
 import Input from "../../components/Input";
 import Layout from "../../components/layout";
 import SubmitButton from "../../components/submitButton";
+import TextArea from "../../components/textArea";
 
 const Wrapper = tw.div`
   mt-20
@@ -23,19 +24,6 @@ const MainContainer = tw.div`
   py-4
 `;
 
-const Main = tw.label`
-  font-bold
-  text-lg
-  `;
-
-const TextArea = tw.textarea`
-  py-2
-  rounded-md
-  focus:ring-orange-500
-  focus:border-orange-500
-  placeholder:text-gray-400
-`;
-
 const ButtonContainer = tw.div`
   mt-8
 `;
@@ -48,8 +36,7 @@ export default function WritePost() {
           <Input type="text" label="제목" labelBold />
         </TitleContainer>
         <MainContainer>
-          <Main>본문</Main>
-          <TextArea rows={6} placeholder="Create Post" />
+          <TextArea placeholder="Create Post" label="본문" />
         </MainContainer>
         <ButtonContainer>
           <SubmitButton text="Create a Post" />

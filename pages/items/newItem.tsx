@@ -2,6 +2,7 @@ import tw from "tailwind-styled-components";
 import Input from "../../components/Input";
 import Layout from "../../components/layout";
 import SubmitButton from "../../components/submitButton";
+import TextArea from "../../components/textArea";
 
 const Wrapper = tw.div`
   mt-16
@@ -46,20 +47,6 @@ const DescriptionContainer = tw.div`
   mb-4
 `;
 
-const DescriptionLabel = tw.label`
-  font-bold
-  text-gray-700
-  text-lg
-  cursor-pointer
-`;
-
-const TextArea = tw.textarea`
-  w-full
-  rounded-md
-  focus:ring-orange-500
-  focus:border-orange-500
-`;
-
 export default function NewItem() {
   return (
     <Layout title="물건 등록" canGoBack isLogIn hasTabBar={false}>
@@ -90,10 +77,7 @@ export default function NewItem() {
           <Input type="price" label="Price" labelBold />
         </PriceContainer>
         <DescriptionContainer>
-          <DescriptionLabel htmlFor="description">Description</DescriptionLabel>
-          <div>
-            <TextArea id="description" rows={6} />
-          </div>
+          <TextArea label="Description" placeholder="Description" />
         </DescriptionContainer>
 
         <SubmitButton text="Upload Item" />
