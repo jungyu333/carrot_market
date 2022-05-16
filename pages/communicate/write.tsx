@@ -3,6 +3,7 @@ import Input from "../../components/Input";
 import Layout from "../../components/layout";
 import SubmitButton from "../../components/submitButton";
 import TextArea from "../../components/textArea";
+import { NextPage } from "next";
 
 const Wrapper = tw.div`
   mt-20
@@ -28,7 +29,7 @@ const ButtonContainer = tw.div`
   mt-8
 `;
 
-export default function WritePost() {
+const WritePost: NextPage = () => {
   return (
     <Layout canGoBack title="새 글 작성" isLogIn hasTabBar={false}>
       <Wrapper>
@@ -44,4 +45,6 @@ export default function WritePost() {
       </Wrapper>
     </Layout>
   );
-}
+};
+
+export default WritePost;

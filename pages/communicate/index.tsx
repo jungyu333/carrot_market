@@ -1,10 +1,12 @@
+import { NextPage } from "next";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
+import Badge from "../../components/badge";
 import FloatingButton from "../../components/floatingButton";
 import Layout from "../../components/layout";
 
 const Wrapper = tw.div`
-  mt-16
+  mt-14
   mb-20
   px-2
   relative
@@ -20,20 +22,6 @@ const PostContainer = tw.div`
   relative
   hover:bg-slate-100
   cursor-pointer
-`;
-
-const Badge = tw.span`
-  border
-  border-gray-200
-  rounded-full
-  p-[0.7px]
-  px-2
-  text-xs
-  bg-slate-200
-  shadow-md
-  absolute
-  left-2
-  top-1.5
 `;
 
 const PostInfoContainer = tw.div`
@@ -76,13 +64,13 @@ const Comment = tw.span`
   text-sm
 `;
 
-export default function Communicate() {
+const Communicate: NextPage = () => {
   return (
     <Layout title="커뮤니티" hasTabBar isLogIn canGoBack={false}>
       <Wrapper>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
           <PostContainer key={i}>
-            <Badge>궁금해요</Badge>
+            <Badge text="궁금해요" />
             <PostInfoContainer>
               <Question>Q.. what are you doing?</Question>
               <Name>jungyu</Name>
@@ -128,4 +116,6 @@ export default function Communicate() {
       </Wrapper>
     </Layout>
   );
-}
+};
+
+export default Communicate;
