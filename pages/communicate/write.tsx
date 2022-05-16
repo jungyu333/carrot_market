@@ -1,4 +1,5 @@
 import tw from "tailwind-styled-components";
+import Input from "../../components/Input";
 import Layout from "../../components/layout";
 import SubmitButton from "../../components/submitButton";
 
@@ -12,20 +13,6 @@ const TitleContainer = tw.div`
   flex-col
   justify-center
   space-y-2
-  py-4
-`;
-
-const Title = tw.label`
-  font-bold
-  text-lg
-`;
-
-const TitleInput = tw.input`
-  py-2
-  rounded-md
-  focus:ring-orange-500
-  focus:border-orange-500
-  placeholder:text-gray-400
 `;
 
 const MainContainer = tw.div`
@@ -58,8 +45,7 @@ export default function WritePost() {
     <Layout canGoBack title="새 글 작성" isLogIn hasTabBar={false}>
       <Wrapper>
         <TitleContainer>
-          <Title>제목</Title>
-          <TitleInput type="text" placeholder="Title" />
+          <Input type="text" label="제목" labelBold />
         </TitleContainer>
         <MainContainer>
           <Main>본문</Main>

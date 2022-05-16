@@ -1,4 +1,5 @@
 import tw from "tailwind-styled-components";
+import Input from "../../components/Input";
 import Layout from "../../components/layout";
 import SubmitButton from "../../components/submitButton";
 
@@ -37,64 +38,7 @@ const ImageFile = tw.input`
   hidden
 `;
 
-const NameInputContainer = tw.div`
-  space-y-2
-`;
-
-const NameLabel = tw.label`
-  font-bold
-  text-gray-700
-  text-lg
-  cursor-pointer
-`;
-
-const NameInput = tw.input`
-  w-full
-  py-2
-  rounded-md
-  focus:ring-orange-500
-  focus:border-orange-500
-`;
-
-const EmailInputContainer = tw.div`
-  space-y-2
-`;
-
-const EmailLabel = tw.label`
-  font-bold
-  text-gray-700
-  text-lg
-  cursor-pointer
-`;
-
-const EmailInput = tw.input`
-  w-full
-  rounded-md
-  focus:ring-orange-500
-  focus:border-orange-500
-`;
-
-const PhoneInputContainer = tw.div`
-  space-y-2
-`;
-
-const PhoneLabel = tw.label`
-  font-bold
-  text-gray-700
-  text-lg
-  cursor-pointer
-`;
-
-const PhoneInput = tw.input`
-  w-full
-  rounded-md
-  focus:ring-orange-500
-  focus:border-orange-500
-  pl-10
-  placeholder:text-gray-400
-`;
-
-const IntroduceContainer = tw.div`
+const InputContainer = tw.div`
   space-y-2
 `;
 
@@ -121,25 +65,19 @@ export default function Edit() {
           <EditImage htmlFor="image">Edit Image</EditImage>
           <ImageFile id="image" accept="image/*" type="file" />
         </AvatarContainer>
-        <NameInputContainer>
-          <NameLabel htmlFor="name">Name</NameLabel>
-          <NameInput autoComplete="off" id="name" type="text" />
-        </NameInputContainer>
-        <EmailInputContainer>
-          <EmailLabel htmlFor="email">Email</EmailLabel>
-          <EmailInput id="email" autoComplete="off" type="email" />
-        </EmailInputContainer>
-        <PhoneInputContainer>
-          <PhoneLabel htmlFor="phone">Phone Number</PhoneLabel>
-          <div className="relative">
-            <span className="absolute top-[10px] left-2">+82</span>
-            <PhoneInput id="phone" autoComplete="off" type="text" />
-          </div>
-        </PhoneInputContainer>
-        <IntroduceContainer>
+        <InputContainer>
+          <Input type="text" label="Name" labelBold placeholder="name" />
+        </InputContainer>
+        <InputContainer>
+          <Input type="email" label="Email" labelBold placeholder="email" />
+        </InputContainer>
+        <InputContainer>
+          <Input type="phone" label="Phone Number" labelBold />
+        </InputContainer>
+        <InputContainer>
           <IntroduceLabel htmlFor="introduce">Introduce</IntroduceLabel>
           <TextArea id="introduce" rows={6} />
-        </IntroduceContainer>
+        </InputContainer>
         <SubmitButton text="Edit Profile" />
       </Wrapper>
     </Layout>

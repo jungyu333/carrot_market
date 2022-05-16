@@ -1,4 +1,5 @@
 import tw from "tailwind-styled-components";
+import Input from "../../components/Input";
 import Layout from "../../components/layout";
 import SubmitButton from "../../components/submitButton";
 
@@ -35,47 +36,9 @@ const ProductNameContainer = tw.div`
   mb-4
 `;
 
-const ProductNameLabel = tw.label`
-  font-bold
-  text-gray-700
-  text-lg
-  cursor-pointer
-`;
-
-const ProductNameInput = tw.input`
-  w-full
-  py-2
-  rounded-md
-  focus:ring-orange-500
-  focus:border-orange-500
-`;
-
 const PriceContainer = tw.div`
   space-y-2
   mb-4
-`;
-
-const PriceLabel = tw.label`
-  font-bold
-  text-gray-700
-  text-lg
-  cursor-pointer
-`;
-
-const PriceInputContainer = tw.div`
-  flex
-  items-center
-  relative
-`;
-
-const PriceInput = tw.input`
-  w-full
-  py-2
-  rounded-md
-  focus:ring-orange-500
-  focus:border-orange-500
-  pl-10
-  placeholder:text-gray-400
 `;
 
 const DescriptionContainer = tw.div`
@@ -121,22 +84,10 @@ export default function NewItem() {
           </ImageLabel>
         </ImageContainer>
         <ProductNameContainer>
-          <ProductNameLabel htmlFor="name">Product Name</ProductNameLabel>
-          <div>
-            <ProductNameInput id="name" autocomplete="off" type="text" />
-          </div>
+          <Input type="text" label="Product Name" labelBold />
         </ProductNameContainer>
         <PriceContainer>
-          <PriceLabel htmlFor="price">Price</PriceLabel>
-          <PriceInputContainer>
-            <span className="absolute left-3">$</span>
-            <PriceInput
-              id="price"
-              autocomplete="off"
-              type="text"
-              placeholder="0.00"
-            />
-          </PriceInputContainer>
+          <Input type="price" label="Price" labelBold />
         </PriceContainer>
         <DescriptionContainer>
           <DescriptionLabel htmlFor="description">Description</DescriptionLabel>

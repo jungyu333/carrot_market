@@ -1,6 +1,7 @@
 import mitt from "next/dist/shared/lib/mitt";
 import { useState } from "react";
 import tw from "tailwind-styled-components";
+import Input from "../components/Input";
 import SubmitButton from "../components/submitButton";
 
 const Wrapper = tw.div`
@@ -68,48 +69,6 @@ const FormWrapper = tw.form`
   mt-6
 `;
 
-const InputLabel = tw.label`
-  font-medium
-  text-sm
-  
-`;
-
-const InputContainer = tw.div`
-    my-2
-`;
-
-const EmailInput = tw.input`
-
-  appearance-none
-  w-full
-  shadow-sm
-  rounded-md
-  border-[1px]
-  border-l-
-  text-gray-500
-  border-gray-300
-  placeholder-gray-400
-  focus:outline-none
-  focus:ring-orange-500
-  focus:border-orange-500
-`;
-
-const PhoneInput = tw.input`
-  px-3
-  py-2
-  appearance-none
-  w-full
-  shadow-sm
-  rounded-r-md
-  border-[1px]
-  text-gray-500
-  border-gray-300
-  placeholder-gray-400
-    focus:outline-none
-  focus:ring-orange-500
-  focus:border-orange-500
-`;
-
 const SubmitButtonContainer = tw.div`
     mt-16
 `;
@@ -146,28 +105,12 @@ export default function Enter() {
         </MethodContainer>
       </MethodWrapper>
       <FormWrapper>
-        <InputLabel>
-          {method === "email" ? "Email Address" : null}
-          {method === "phone" ? "Phone Number" : null}
-        </InputLabel>
-        <InputContainer>
-          {method === "email" ? (
-            <EmailInput
-              autoComplete="off"
-              placeholder="Input Your Email!"
-              type="email"
-              required
-            />
-          ) : null}
-          {method === "phone" ? (
-            <div className="flex rounded-md shadow-sm">
-              <span className="flex select-none items-center  justify-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
-                +82
-              </span>
-              <PhoneInput type="text" />
-            </div>
-          ) : null}
-        </InputContainer>
+        {method === "email" ? (
+          <Input type="email" label="Email Address" />
+        ) : null}
+        {method === "phone" ? (
+          <Input type="phone" label="Phone Number" />
+        ) : null}
         <SubmitButtonContainer>
           {method === "email" ? (
             <SubmitButton text="Enter With Email!" />
