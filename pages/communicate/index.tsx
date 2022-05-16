@@ -1,7 +1,6 @@
 import { NextPage } from "next";
-import Link from "next/link";
 import tw from "tailwind-styled-components";
-import Badge from "../../components/badge";
+import CommunicateItem from "../../components/communicateItem";
 import FloatingButton from "../../components/floatingButton";
 import Layout from "../../components/layout";
 
@@ -69,33 +68,14 @@ const Communicate: NextPage = () => {
     <Layout title="커뮤니티" hasTabBar isLogIn canGoBack={false}>
       <Wrapper>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-          <PostContainer key={i}>
-            <Badge text="궁금해요" />
-            <PostInfoContainer>
-              <Question>Q.. what are you doing?</Question>
-              <Name>jungyu</Name>
-            </PostInfoContainer>
-            <PostSubInfoContainer>
-              <Time>11:20</Time>
-              <CommentContainer>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 pr-2"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-                  />
-                </svg>
-                <Comment>2</Comment>
-              </CommentContainer>
-            </PostSubInfoContainer>
-          </PostContainer>
+          <CommunicateItem
+            id={i}
+            key={i}
+            questionTitle="what are you doing?"
+            name="jungyu"
+            comment={4}
+            createdAt="11:40"
+          />
         ))}
         <FloatingButton href="/communicate/write">
           <svg
