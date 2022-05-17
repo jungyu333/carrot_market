@@ -1,7 +1,7 @@
 import tw from "tailwind-styled-components";
 
 interface InputProps {
-  type: "email" | "phone" | "text" | "price";
+  type: "member" | "nonMember" | "text" | "price" | "email" | "phone";
   label: string;
   labelBold?: boolean;
   placeholder?: string;
@@ -19,7 +19,7 @@ const InputLabel = tw.label<InputLabelProps>`
  
 `;
 
-const EmailInput = tw.input`
+const MemberInput = tw.input`
   appearance-none
   w-full
   shadow-sm
@@ -33,7 +33,7 @@ const EmailInput = tw.input`
   focus:border-orange-500
 `;
 
-const PhoneInput = tw.input`
+const NonMemberInput = tw.input`
   px-3
   py-2
   appearance-none
@@ -72,15 +72,37 @@ export default function Input({
 }: InputProps) {
   return (
     <>
-      {type === "email" ? (
+      {type === "member" ? (
         <>
           <InputLabel $labelBold={labelBold}>{label}</InputLabel>
-          <EmailInput
+          <MemberInput
             autoComplete="off"
             placeholder={placeholder}
             type="email"
             required
           />
+        </>
+      ) : null}
+      {type === "email" ? (
+        <>
+          <InputLabel $labelBold={labelBold}>{label}</InputLabel>
+          <MemberInput
+            autoComplete="off"
+            placeholder={placeholder}
+            type="email"
+            required
+          />
+        </>
+      ) : null}
+      {type === "nonMember" ? (
+        <>
+          <InputLabel $labelBold={labelBold}>{label}</InputLabel>
+          <div className="flex rounded-md shadow-sm">
+            <span className="flex select-none items-center  justify-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
+              +82
+            </span>
+            <NonMemberInput required autoComplete="off" type="text" />
+          </div>
         </>
       ) : null}
       {type === "phone" ? (
@@ -90,7 +112,7 @@ export default function Input({
             <span className="flex select-none items-center  justify-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
               +82
             </span>
-            <PhoneInput required autoComplete="off" type="text" />
+            <NonMemberInput required autoComplete="off" type="text" />
           </div>
         </>
       ) : null}
@@ -110,7 +132,7 @@ export default function Input({
       {type === "text" ? (
         <>
           <InputLabel $labelBold={labelBold}>{label}</InputLabel>
-          <EmailInput
+          <MemberInput
             autoComplete="off"
             type="text"
             placeholder={placeholder}

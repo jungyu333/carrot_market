@@ -1,9 +1,10 @@
 import { NextPage } from "next";
 import mitt from "next/dist/shared/lib/mitt";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import tw from "tailwind-styled-components";
-import Input from "../components/Input";
-import SubmitButton from "../components/submitButton";
+import Input from "../../components/Input";
+import SubmitButton from "../../components/submitButton";
 
 const Wrapper = tw.div`
   mt-16
@@ -39,7 +40,7 @@ const MethodContainer = tw.div`
 `;
 
 interface MethodButtonProps {
-  $props: "email" | "phone";
+  $props: "member" | "nonMember";
 }
 
 const EmailMethod = tw.button<MethodButtonProps>`
@@ -49,7 +50,7 @@ const EmailMethod = tw.button<MethodButtonProps>`
   pb-2
   text-gray-500
   ${(p: any) =>
-    p.$props === "email"
+    p.$props === "member"
       ? "text-orange-400 font-bold border-orange-400"
       : "border-transparent hover:text-gray-400 text-gray-500"}
 `;
@@ -61,13 +62,24 @@ const PhoneMethod = tw.button<MethodButtonProps>`
   pb-2
   text-gray-500
   ${(p: any) =>
-    p.$props === "phone"
+    p.$props === "nonMember"
       ? "text-orange-400 font-bold  border-orange-400"
       : "border-transparent hover:text-gray-400 text-gray-500"}
 `;
 
 const FormWrapper = tw.form`
   mt-6
+`;
+
+const NewMember = tw.span`
+  text-left
+  text-sm
+  font-bold
+  my-10
+  mt-5
+  text-gray-400
+  hover:text-gray-700
+  cursor-pointer
 `;
 
 const SubmitButtonContainer = tw.div`
@@ -84,12 +96,16 @@ const CreatedBy = tw.div`
 `;
 
 const Enter: NextPage = () => {
-  const [method, setMethod] = useState<"email" | "phone">("email");
+  const router = useRouter();
+  const [method, setMethod] = useState<"member" | "nonMember">("member");
   const onClickEmail = () => {
-    setMethod("email");
+    setMethod("member");
   };
   const onClickPhone = () => {
-    setMethod("phone");
+    setMethod("nonMember");
+  };
+  const onClickNewMember = () => {
+    router.push("/enter/newMember");
   };
   return (
     <Wrapper>
@@ -98,27 +114,23 @@ const Enter: NextPage = () => {
         <MethodHeader>Using Method</MethodHeader>
         <MethodContainer>
           <EmailMethod $props={method} onClick={onClickEmail}>
-            Email
+            Member Login
           </EmailMethod>
           <PhoneMethod $props={method} onClick={onClickPhone}>
-            Phone
+            Non-Member Login
           </PhoneMethod>
         </MethodContainer>
       </MethodWrapper>
       <FormWrapper>
-        {method === "email" ? (
-          <Input type="email" label="Email Address" />
+        {method === "member" ? (
+          <Input type="member" label="Email Address" />
         ) : null}
-        {method === "phone" ? (
-          <Input type="phone" label="Phone Number" />
+        {method === "nonMember" ? (
+          <Input type="nonMember" label="Phone Number" />
         ) : null}
+        <NewMember onClick={onClickNewMember}>회원가입</NewMember>
         <SubmitButtonContainer>
-          {method === "email" ? (
-            <SubmitButton text="Enter With Email!" />
-          ) : null}
-          {method === "phone" ? (
-            <SubmitButton text="Enter With Phone Number!" />
-          ) : null}
+          <SubmitButton text="Enter!" />
         </SubmitButtonContainer>
       </FormWrapper>
       <CreatedBy>Created By Jun</CreatedBy>
