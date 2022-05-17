@@ -1,60 +1,12 @@
 import tw from "tailwind-styled-components";
 import Layout from "../../components/layout";
+import Message from "../../components/message";
 
 const Wrapper = tw.div`
   mt-20
   px-3
   relative
 `;
-
-const MessageContainer = tw.div<MessageProps>`
-  flex
-  space-x-3
-  mt-5
-  ${(p: MessageProps) => (p.$isreversed ? "flex-row-reverse" : " ")}
-`;
-
-const Avatar = tw.div`
-  w-10
-  h-10
-  bg-slate-300
-  rounded-full
-`;
-
-const TextContainer = tw.div`
-  w-1/3
-  flex
-  flex-col
-  justify-center
-  items-start
-  space-y-2
-  -mt-1
-  
-`;
-
-const Name = tw.span<MessageProps>`
-  w-full
-  px-2
-  ${(p: MessageProps) => (p.$isreversed ? "text-right" : "text-left ")}
-`;
-
-const Text = tw.p<MessageProps>`
-  border
-  py-3
-  px-2
-  w-full
-  break-words
-  rounded-br-lg
-  rounded-bl-lg
-  ${(p: MessageProps) =>
-    p.$isreversed
-      ? "rounded-tl-lg   bg-orange-300 text-right"
-      : " rounded-tr-lg  bg-slate-200"}
-`;
-
-interface MessageProps {
-  $isreversed: boolean;
-}
 
 const InputContainer = tw.div`
   fixed
@@ -94,70 +46,8 @@ export default function ChatDetail() {
   return (
     <Layout canGoBack title="Jungyu" isLogIn={false} hasTabBar={false}>
       <Wrapper>
-        <MessageContainer $isreversed>
-          <Avatar />
-          <TextContainer>
-            <Name $isreversed>jungyu</Name>
-            <Text $isreversed>hello</Text>
-          </TextContainer>
-        </MessageContainer>
-        <MessageContainer>
-          <Avatar />
-          <TextContainer>
-            <Name>jungyu</Name>
-            <Text>hello</Text>
-          </TextContainer>
-        </MessageContainer>
-        <MessageContainer>
-          <Avatar />
-          <TextContainer>
-            <Name>jungyu</Name>
-            <Text>hello</Text>
-          </TextContainer>
-        </MessageContainer>
-        <MessageContainer>
-          <Avatar />
-          <TextContainer>
-            <Name>jungyu</Name>
-            <Text>hello</Text>
-          </TextContainer>
-        </MessageContainer>
-        <MessageContainer>
-          <Avatar />
-          <TextContainer>
-            <Name>jungyu</Name>
-            <Text>hello</Text>
-          </TextContainer>
-        </MessageContainer>
-        <MessageContainer>
-          <Avatar />
-          <TextContainer>
-            <Name>jungyu</Name>
-            <Text>hello</Text>
-          </TextContainer>
-        </MessageContainer>
-        <MessageContainer>
-          <Avatar />
-          <TextContainer>
-            <Name>jungyu</Name>
-            <Text>hello</Text>
-          </TextContainer>
-        </MessageContainer>
-        <MessageContainer>
-          <Avatar />
-          <TextContainer>
-            <Name>jungyu</Name>
-            <Text>hello</Text>
-          </TextContainer>
-        </MessageContainer>
-        <MessageContainer>
-          <Avatar />
-          <TextContainer>
-            <Name>jungyu</Name>
-            <Text>hello</Text>
-          </TextContainer>
-        </MessageContainer>
-
+        <Message name="jungyu" text="hello" isreversed />
+        <Message name="jun" text="hi" />
         <InputContainer>
           <Input type="text" />
           <SendButton>
