@@ -2,6 +2,7 @@ import type { NextPage } from "next";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
 import Layout from "../../components/layout";
+import ListButton from "../../components/listButton";
 
 const Wrapper = tw.div`
   mt-16
@@ -12,15 +13,13 @@ const UserWrapper = tw.div`
   flex
 `;
 
-const AvatarContainer = tw.div`
+const Avatar = tw.div`
   w-20
   h-20
   bg-slate-300
   rounded-full
   mr-4
 `;
-
-const Avatar = tw.div``;
 
 const UserInfo = tw.div`
   flex
@@ -52,7 +51,7 @@ const ListWrapper = tw.div`
   mb-2
 `;
 
-const PurchaseContainer = tw.div`
+const ListContainer = tw.div`
   flex 
   flex-col 
   items-center 
@@ -60,72 +59,7 @@ const PurchaseContainer = tw.div`
   cursor-pointer
 `;
 
-const PurchaseIcon = tw.div`
-  flex
-  flex-col
-  justify-center
-  items-center
-  w-16
-  h-16
-  border
-  bg-orange-400
-  p-4
-  rounded-full
-`;
-
-const Purchase = tw.span`
-  font-medium
-  text-gray-500
-`;
-
-const SalesContainer = tw.div`
-  flex 
-  flex-col 
-  items-center 
-  space-y-2
-  cursor-pointer
-`;
-
-const SalesIcon = tw.div`
-  flex
-  flex-col
-  justify-center
-  items-center
-  w-16
-  h-16
-  border
-  bg-orange-400
-  p-4
-  rounded-full
-`;
-
-const Sales = tw.span`
-  font-medium
-  text-gray-500
-`;
-
-const WatchContainer = tw.div` 
-  flex 
-  flex-col 
-  items-center 
-  space-y-2
-  cursor-pointer
-`;
-
-const WatchIcon = tw.div`
-  flex
-  flex-col
-  justify-center
-  items-center
-  w-16
-  h-16
-  border
-  bg-orange-400
-  p-4
-  rounded-full
-`;
-
-const Watch = tw.span`
+const ListName = tw.span`
   font-medium
   text-gray-500
 `;
@@ -141,12 +75,10 @@ const Introduce = tw.div`
 
 const Profile: NextPage = () => {
   return (
-    <Layout title="마이페이지" isLogIn hasTabBar canGoBack={false}>
+    <Layout title="마이페이지" isLogIn hasTabBar>
       <Wrapper>
         <UserWrapper>
-          <AvatarContainer>
-            <Avatar />
-          </AvatarContainer>
+          <Avatar />
           <UserInfo>
             <UserName>jungyu</UserName>
             <Link href="/profile/edit">
@@ -156,8 +88,8 @@ const Profile: NextPage = () => {
         </UserWrapper>
         <ListWrapper>
           <Link href="/profile/purchase">
-            <PurchaseContainer>
-              <PurchaseIcon>
+            <ListContainer>
+              <ListButton>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-white "
@@ -172,13 +104,13 @@ const Profile: NextPage = () => {
                     d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
                   />
                 </svg>
-              </PurchaseIcon>
-              <Purchase>구매목록</Purchase>
-            </PurchaseContainer>
+              </ListButton>
+              <ListName>구매목록</ListName>
+            </ListContainer>
           </Link>
           <Link href="/profile/sell">
-            <SalesContainer>
-              <SalesIcon>
+            <ListContainer>
+              <ListButton>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-white "
@@ -193,13 +125,13 @@ const Profile: NextPage = () => {
                     d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-              </SalesIcon>
-              <Sales>판매목록</Sales>
-            </SalesContainer>
+              </ListButton>
+              <ListName>판매목록</ListName>
+            </ListContainer>
           </Link>
           <Link href="/profile/fav">
-            <WatchContainer>
-              <WatchIcon>
+            <ListContainer>
+              <ListButton>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   className="h-6 w-6 text-white"
@@ -214,9 +146,9 @@ const Profile: NextPage = () => {
                     d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
                   />
                 </svg>
-              </WatchIcon>
-              <Watch>관심목록</Watch>
-            </WatchContainer>
+              </ListButton>
+              <ListName>관심목록</ListName>
+            </ListContainer>
           </Link>
         </ListWrapper>
         <span className="  text-2xl font-bold">Introduce!</span>

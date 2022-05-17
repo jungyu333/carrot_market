@@ -4,7 +4,7 @@ import tw from "tailwind-styled-components";
 import Layout from "../../components/layout";
 
 const Wrapper = tw.div`
-  mt-16
+  mt-14
   mb-20
 `;
 
