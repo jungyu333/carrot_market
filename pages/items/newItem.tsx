@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import tw from "tailwind-styled-components";
 import Input from "../../components/Input";
 import Layout from "../../components/layout";
@@ -47,7 +48,7 @@ const DescriptionContainer = tw.div`
   mb-4
 `;
 
-export default function NewItem() {
+const NewItem: NextPage = () => {
   return (
     <Layout title="물건 등록" canGoBack isLogIn hasTabBar={false}>
       <Wrapper>
@@ -84,4 +85,6 @@ export default function NewItem() {
       </Wrapper>
     </Layout>
   );
-}
+};
+
+export default NewItem;

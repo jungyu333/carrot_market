@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import tw from "tailwind-styled-components";
 import Item from "../../components/item";
 import Layout from "../../components/layout";
@@ -6,7 +7,7 @@ const Wrapper = tw.div`
   mt-16
 `;
 
-export default function PurChase() {
+const PurChase: NextPage = () => {
   return (
     <Layout canGoBack isLogIn hasTabBar={false} title="구매 목록">
       <Wrapper>
@@ -23,4 +24,6 @@ export default function PurChase() {
       </Wrapper>
     </Layout>
   );
-}
+};
+
+export default PurChase;

@@ -36,12 +36,13 @@ const Name = tw.span`
 const PostSubInfoContainer = tw.div`
   flex
   flex-col
-  space-y-8
+  space-y-10
 `;
 
 const Time = tw.span`
   text-gray-400
   text-sm
+  text-right
 `;
 
 const CommentContainer = tw.div`
@@ -60,6 +61,7 @@ interface CommunicateItem {
   name: string;
   createdAt: string;
   comment: number;
+  badgeText: string;
 }
 
 export default function CommunicateItem({
@@ -68,34 +70,54 @@ export default function CommunicateItem({
   name,
   createdAt,
   comment,
+  badgeText,
 }: CommunicateItem) {
   return (
     <Link href={`/communicate/${id}`}>
       <PostContainer>
-        <Badge text="궁금해요" />
+        <Badge text={badgeText} />
         <PostInfoContainer>
           <Question>Q.. {questionTitle}</Question>
           <Name>{name}</Name>
         </PostInfoContainer>
         <PostSubInfoContainer>
           <Time>{createdAt}</Time>
-          <CommentContainer>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 pr-2"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-              />
-            </svg>
-            <Comment>{comment}</Comment>
-          </CommentContainer>
+          <div className="flex items-center space-x-2">
+            <CommentContainer>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 pr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              <Comment>{comment}</Comment>
+            </CommentContainer>
+            <CommentContainer>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 pr-2"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
+              <Comment>{comment}</Comment>
+            </CommentContainer>
+          </div>
         </PostSubInfoContainer>
       </PostContainer>
     </Link>

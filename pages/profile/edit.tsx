@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import tw from "tailwind-styled-components";
 import Input from "../../components/Input";
 import Layout from "../../components/layout";
@@ -43,7 +44,7 @@ const InputContainer = tw.div`
   space-y-2
 `;
 
-export default function Edit() {
+const Edit: NextPage = () => {
   return (
     <Layout canGoBack title="내 정보" hasTabBar={false} isLogIn={false}>
       <Wrapper>
@@ -68,4 +69,6 @@ export default function Edit() {
       </Wrapper>
     </Layout>
   );
-}
+};
+
+export default Edit;

@@ -11,58 +11,6 @@ const Wrapper = tw.div`
   relative
 `;
 
-const PostContainer = tw.div`
-  px-4
-  py-5
-  border-b
-  flex
-  items-center
-  justify-between
-  relative
-  hover:bg-slate-100
-  cursor-pointer
-`;
-
-const PostInfoContainer = tw.div`
-  mt-3
-  flex
-  flex-col
-  items-start
-`;
-
-const Question = tw.div`
-  font-bold
-  text-lg
-  mb-2
-`;
-
-const Name = tw.span`
-  
-  font-medium
-  text-sm
-`;
-
-const PostSubInfoContainer = tw.div`
-  flex
-  flex-col
-  space-y-8
-`;
-
-const Time = tw.span`
-  text-gray-400
-  text-sm
-`;
-
-const CommentContainer = tw.div`
-  flex
-  items-center
-  justify-center
-`;
-
-const Comment = tw.span`
-  text-sm
-`;
-
 const Communicate: NextPage = () => {
   return (
     <Layout title="커뮤니티" hasTabBar isLogIn canGoBack={false}>
@@ -75,6 +23,7 @@ const Communicate: NextPage = () => {
             name="jungyu"
             comment={4}
             createdAt="11:40"
+            badgeText="궁금해요!"
           />
         ))}
         <FloatingButton href="/communicate/write">

@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import mitt from "next/dist/shared/lib/mitt";
 import { useState } from "react";
 import tw from "tailwind-styled-components";
@@ -82,7 +83,7 @@ const CreatedBy = tw.div`
     border-t
 `;
 
-export default function Enter() {
+const Enter: NextPage = () => {
   const [method, setMethod] = useState<"email" | "phone">("email");
   const onClickEmail = () => {
     setMethod("email");
@@ -123,4 +124,6 @@ export default function Enter() {
       <CreatedBy>Created By Jun</CreatedBy>
     </Wrapper>
   );
-}
+};
+
+export default Enter;
