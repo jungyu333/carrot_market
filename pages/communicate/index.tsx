@@ -24,6 +24,7 @@ const Communicate: NextPage = () => {
             comment={4}
             createdAt="11:40"
             badgeText="궁금해요!"
+            wondering={3}
           />
         ))}
         <FloatingButton href="/communicate/write">

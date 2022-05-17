@@ -62,6 +62,7 @@ interface CommunicateItem {
   createdAt: string;
   comment: number;
   badgeText: string;
+  wondering: number;
 }
 
 export default function CommunicateItem({
@@ -70,6 +71,7 @@ export default function CommunicateItem({
   name,
   createdAt,
   comment,
+  wondering,
   badgeText,
 }: CommunicateItem) {
   return (
@@ -98,7 +100,7 @@ export default function CommunicateItem({
                   d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              <Comment>{comment}</Comment>
+              <Comment>{wondering}</Comment>
             </CommentContainer>
             <CommentContainer>
               <svg
