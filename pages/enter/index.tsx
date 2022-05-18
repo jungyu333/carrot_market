@@ -3,8 +3,8 @@ import mitt from "next/dist/shared/lib/mitt";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import tw from "tailwind-styled-components";
-import Input from "../../components/Input";
-import SubmitButton from "../../components/submitButton";
+import Input from "@components/Input";
+import SubmitButton from "@components/submitButton";
 
 const Wrapper = tw.div`
   mt-16

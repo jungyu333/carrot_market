@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import tw from "tailwind-styled-components";
-import CommunicateItem from "../../components/communicateItem";
-import FloatingButton from "../../components/floatingButton";
-import Layout from "../../components/layout";
+import CommunicateItem from "@components/communicateItem";
+import FloatingButton from "@components/floatingButton";
+import Layout from "@components/layout";
 
 const Wrapper = tw.div`
   mt-14

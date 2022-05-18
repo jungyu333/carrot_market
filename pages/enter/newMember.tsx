@@ -1,10 +1,10 @@
 import { NextPage } from "next";
 import tw from "tailwind-styled-components";
-import Input from "../../components/Input";
-import Layout from "../../components/layout";
-import TextArea from "../../components/textArea";
+import Input from "@components/Input";
+import Layout from "@components/layout";
+import TextArea from "@components/textArea";
 import { useForm } from "react-hook-form";
-import SubmitButton from "../../components/submitButton";
+import SubmitButton from "@components/submitButton";
 import useMutaion from "../../libs/client/useMutation";
 
 const Wrapper = tw.form`

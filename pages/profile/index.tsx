@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
 import Link from "next/link";
 import tw from "tailwind-styled-components";
-import Layout from "../../components/layout";
-import ListButton from "../../components/listButton";
+import Layout from "@components/layout";
+import ListButton from "@components/listButton";
 
 const Wrapper = tw.div`
   mt-16

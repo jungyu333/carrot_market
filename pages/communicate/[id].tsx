@@ -1,8 +1,8 @@
 import { NextPage } from "next";
 import tw from "tailwind-styled-components";
-import Layout from "../../components/layout";
-import SubmitButton from "../../components/submitButton";
-import TextArea from "../../components/textArea";
+import Layout from "@components/layout";
+import SubmitButton from "@components/submitButton";
+import TextArea from "@components/textArea";
 
 const Wrapper = tw.div`
   mt-16

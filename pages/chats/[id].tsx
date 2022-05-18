@@ -1,6 +1,6 @@
 import tw from "tailwind-styled-components";
-import Layout from "../../components/layout";
-import Message from "../../components/message";
+import Layout from "@components/layout";
+import Message from "@components/message";
 
 const Wrapper = tw.div`
   mt-20
