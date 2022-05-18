@@ -1,3 +1,4 @@
+import { UseFormRegisterReturn } from "react-hook-form";
 import tw from "tailwind-styled-components";
 
 interface InputProps {
@@ -5,6 +6,8 @@ interface InputProps {
   label: string;
   labelBold?: boolean;
   placeholder?: string;
+  register: UseFormRegisterReturn;
+  required?: boolean;
 }
 
 interface InputLabelProps {
@@ -69,6 +72,8 @@ export default function Input({
   label,
   labelBold = false,
   placeholder,
+  register,
+  required,
 }: InputProps) {
   return (
     <>
@@ -87,10 +92,11 @@ export default function Input({
         <>
           <InputLabel $labelBold={labelBold}>{label}</InputLabel>
           <MemberInput
+            {...register}
             autoComplete="off"
+            required={required}
             placeholder={placeholder}
             type="email"
-            required
           />
         </>
       ) : null}
@@ -112,7 +118,12 @@ export default function Input({
             <span className="flex select-none items-center  justify-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
               +82
             </span>
-            <NonMemberInput required autoComplete="off" type="text" />
+            <NonMemberInput
+              {...register}
+              required={required}
+              autoComplete="off"
+              type="text"
+            />
           </div>
         </>
       ) : null}
@@ -121,10 +132,11 @@ export default function Input({
           <InputLabel $labelBold={labelBold}>{label}</InputLabel>
           <div className="relative">
             <PriceInput
-              id="price"
+              {...register}
               autocomplete="off"
               type="text"
               placeholder="0.00"
+              required={required}
             />
           </div>
         </>
@@ -133,10 +145,11 @@ export default function Input({
         <>
           <InputLabel $labelBold={labelBold}>{label}</InputLabel>
           <MemberInput
+            {...register}
             autoComplete="off"
             type="text"
             placeholder={placeholder}
-            required
+            required={required}
           />
         </>
       ) : null}

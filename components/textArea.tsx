@@ -1,3 +1,4 @@
+import { UseFormRegisterReturn } from "react-hook-form";
 import tw from "tailwind-styled-components";
 
 const DescriptionLabel = tw.label`
@@ -21,13 +22,18 @@ const Text = tw.textarea`
 interface TextAreaProps {
   label?: string;
   placeholder?: string;
+  register: UseFormRegisterReturn;
 }
 
-export default function TextArea({ label, placeholder }: TextAreaProps) {
+export default function TextArea({
+  label,
+  placeholder,
+  register,
+}: TextAreaProps) {
   return (
     <>
       <DescriptionLabel>{label}</DescriptionLabel>
-      <Text placeholder={placeholder} rows={6} />
+      <Text {...register} placeholder={placeholder} rows={6} />
     </>
   );
 }
