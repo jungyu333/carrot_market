@@ -1,5 +1,4 @@
 import { NextPage } from "next";
-import mitt from "next/dist/shared/lib/mitt";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import tw from "tailwind-styled-components";

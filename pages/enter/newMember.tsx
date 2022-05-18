@@ -31,8 +31,8 @@ const NewMember: NextPage = () => {
     reset,
   } = useForm<FormData>();
   const onValid = (validForm: FormData) => {
+    if (loading) return;
     newMember(validForm);
-    console.log(data);
     reset();
   };
 
