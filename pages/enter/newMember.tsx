@@ -5,6 +5,7 @@ import Layout from "../../components/layout";
 import TextArea from "../../components/textArea";
 import { useForm } from "react-hook-form";
 import SubmitButton from "../../components/submitButton";
+import useMutaion from "../../libs/client/useMutation";
 
 const Wrapper = tw.form`
   mt-24
@@ -12,7 +13,7 @@ const Wrapper = tw.form`
   space-y-2
 `;
 
-interface FormResponse {
+interface FormData {
   name: string;
   email: string;
   phone: number;
@@ -21,14 +22,16 @@ interface FormResponse {
 }
 
 const NewMember: NextPage = () => {
+  const [newMember, { loading, data, error }] =
+    useMutaion("/api/users/newUser");
   const {
     register,
     formState: { errors },
     handleSubmit,
     reset,
-    watch,
-  } = useForm<FormResponse>();
-  const onValid = (data: FormResponse) => {
+  } = useForm<FormData>();
+  const onValid = (validForm: FormData) => {
+    newMember(validForm);
     console.log(data);
     reset();
   };
@@ -49,6 +52,10 @@ const NewMember: NextPage = () => {
           labelBold
           register={register("password", {
             required: "비밀번호를 입력해주세요",
+            minLength: {
+              value: 6,
+              message: "비밀번호는 6자 이상으로 만들어주세요",
+            },
           })}
         />
         <span>{errors.password?.message}</span>
