@@ -98,17 +98,26 @@ const CreatedBy = tw.div`
 
 interface FormData {
   email?: string;
-  phone?: string;
   password: string;
+}
+
+interface TokenData {
+  token: string;
+}
+
+interface NewNonUserMutationResult {
+  ok: boolean;
 }
 
 const Enter: NextPage = () => {
   const { register, handleSubmit, reset } = useForm<FormData>();
+  const { register: tokenRegisger, handleSubmit: tokenhandleSubmit } =
+    useForm<TokenData>();
   const router = useRouter();
   const [method, setMethod] = useState<"member" | "nonMember">("member");
   const onClickEmail = () => {
     setMethod("member");
-    reset({ phone: "" });
+    reset({ email: "" });
   };
   const onClickPhone = () => {
     setMethod("nonMember");
@@ -117,13 +126,19 @@ const Enter: NextPage = () => {
   const onClickNewMember = () => {
     router.push("/enter/newMember");
   };
-  const [newNonUser, { loading, data }] = useMutaion("/api/users/newNonUser");
+  const [newNonUser, { loading, data }] = useMutaion<NewNonUserMutationResult>(
+    "/api/users/newNonUser"
+  );
 
   const onValid = (validForm: FormData) => {
     if (method === "nonMember") {
       if (loading) return;
       newNonUser(validForm);
     }
+  };
+
+  const tokenOnValid = (validForm: TokenData) => {
+    console.log(validForm);
   };
 
   return (
@@ -140,33 +155,48 @@ const Enter: NextPage = () => {
           </PhoneMethod>
         </MethodContainer>
       </MethodWrapper>
-      <FormWrapper onSubmit={handleSubmit(onValid)}>
-        {method === "member" ? (
-          <div className="space-y-2">
+      {data?.ok ? (
+        <FormWrapper onSubmit={tokenhandleSubmit(tokenOnValid)}>
+          <Input
+            type="text"
+            label="Token Number"
+            register={tokenRegisger("token")}
+          />
+          <SubmitButtonContainer>
+            <SubmitButton text="Enter" />
+          </SubmitButtonContainer>
+        </FormWrapper>
+      ) : (
+        <FormWrapper onSubmit={handleSubmit(onValid)}>
+          {method === "member" ? (
+            <div className="space-y-2">
+              <Input
+                register={register("email")}
+                type="member"
+                label="Email Address"
+              />
+              <Input
+                type="text"
+                label="Password"
+                register={register("password")}
+              />
+            </div>
+          ) : null}
+          {method === "nonMember" ? (
             <Input
               register={register("email")}
-              type="member"
+              type="email"
               label="Email Address"
             />
-            <Input
-              type="text"
-              label="Password"
-              register={register("password")}
-            />
-          </div>
-        ) : null}
-        {method === "nonMember" ? (
-          <Input
-            register={register("phone")}
-            type="nonMember"
-            label="Phone Number"
-          />
-        ) : null}
-        <NewMember onClick={onClickNewMember}>회원가입</NewMember>
-        <SubmitButtonContainer>
-          <SubmitButton text="Enter!" />
-        </SubmitButtonContainer>
-      </FormWrapper>
+          ) : null}
+          {method === "member" ? (
+            <NewMember onClick={onClickNewMember}>회원가입</NewMember>
+          ) : null}
+          <SubmitButtonContainer>
+            <SubmitButton text="Enter" />
+          </SubmitButtonContainer>
+        </FormWrapper>
+      )}
       <CreatedBy>Created By Jun</CreatedBy>
     </Wrapper>
   );

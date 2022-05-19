@@ -1,19 +1,16 @@
 import { loadavg } from "os";
 import { useState } from "react";
 
-type useMutaionResult = [(data?: any) => void, UseMutaionState];
+type useMutaionResult<T> = [(data?: any) => void, UseMutaionState<T>];
 
-interface UseMutaionState {
-  data?: {
-    ok: boolean;
-    message?: string;
-  };
+interface UseMutaionState<T> {
+  data?: T;
   error?: object;
   loading: boolean;
 }
 
-export default function useMutaion(url: string): useMutaionResult {
-  const [state, setState] = useState<UseMutaionState>({
+export default function useMutaion<T = any>(url: string): useMutaionResult<T> {
+  const [state, setState] = useState<UseMutaionState<T>>({
     loading: false,
     data: undefined,
     error: undefined,

@@ -30,10 +30,15 @@ const Error = tw.span`
   pt-1
 `;
 
+interface MutationResult {
+  ok: boolean;
+  message: string;
+}
+
 const NewMember: NextPage = () => {
   const router = useRouter();
   const [newMember, { loading, data, error }] =
-    useMutaion("/api/users/newUser");
+    useMutaion<MutationResult>("/api/users/newUser");
   const {
     register,
     formState: { errors },
