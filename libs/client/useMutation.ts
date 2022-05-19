@@ -4,7 +4,10 @@ import { useState } from "react";
 type useMutaionResult = [(data?: any) => void, UseMutaionState];
 
 interface UseMutaionState {
-  data?: object;
+  data?: {
+    ok: boolean;
+    message?: string;
+  };
   error?: object;
   loading: boolean;
 }

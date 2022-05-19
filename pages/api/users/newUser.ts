@@ -1,9 +1,11 @@
 import withHandler from "@libs/server/withHandler";
 import { NextApiRequest, NextApiResponse } from "next";
+
 import client from "../../../libs/server/client";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { name, email, phone, introduce, password } = req.body;
+
   let user;
   if (email) {
     user = await client.user.findUnique({
@@ -12,7 +14,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     });
     if (user) {
-      res.json({ ok: false, message: "existed email" });
+      return res.json({ ok: false, message: "existed email" });
     }
     if (!user) {
       console.log("did not found");
@@ -25,24 +27,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           password,
         },
       });
-      console.log(user);
-      res.json({ ok: true, message: "created account", user });
+
+      return res.json({ ok: true, message: "created account" });
     }
   }
-
-  // user = await client.user.upsert({
-  //   where: {
-  //     email: email,
-  //   },
-  //   create: {
-  //     name,
-  //     password,
-  //     phone: +phone,
-  //     email,
-  //     introduce,
-  //   },
-  //   update: {},
-  // });
 }
 
 export default withHandler("POST", handler);

@@ -6,6 +6,9 @@ import TextArea from "@components/textArea";
 import { useForm } from "react-hook-form";
 import SubmitButton from "@components/submitButton";
 import useMutaion from "../../libs/client/useMutation";
+import useSWR from "swr";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const Wrapper = tw.form`
   mt-24
@@ -21,7 +24,14 @@ interface FormData {
   password: string;
 }
 
+const Error = tw.span`
+  text-red-500
+  text-sm
+  pt-1
+`;
+
 const NewMember: NextPage = () => {
+  const router = useRouter();
   const [newMember, { loading, data, error }] =
     useMutaion("/api/users/newUser");
   const {
@@ -33,8 +43,18 @@ const NewMember: NextPage = () => {
   const onValid = (validForm: FormData) => {
     if (loading) return;
     newMember(validForm);
-    reset();
   };
+
+  useEffect(() => {
+    if (data?.message === "existed email") {
+      alert("중복된 이메일입니다.");
+      reset({ email: "" });
+    }
+    if (data?.message === "created account") {
+      alert("회원가입이 완료되었습니다.");
+      router.push("/enter");
+    }
+  }, [data, reset, router]);
 
   return (
     <Layout canGoBack title="회원 가입">
@@ -45,7 +65,7 @@ const NewMember: NextPage = () => {
           label="Email"
           labelBold
         />
-        <span>{errors.email?.message}</span>
+        <Error>{errors.email?.message}</Error>
         <Input
           type="text"
           label="비밀번호"
@@ -58,7 +78,7 @@ const NewMember: NextPage = () => {
             },
           })}
         />
-        <span>{errors.password?.message}</span>
+        <Error>{errors.password?.message}</Error>
         <Input
           register={register("name", {
             required: "이름을 입력해주세요",
@@ -67,7 +87,7 @@ const NewMember: NextPage = () => {
           label="이름"
           labelBold
         />
-        <span>{errors.name?.message}</span>
+        <Error>{errors.name?.message}</Error>
         <Input
           register={register("phone")}
           type="phone"
@@ -78,7 +98,7 @@ const NewMember: NextPage = () => {
         <div className="pt-2">
           <TextArea register={register("introduce")} label="자기소개" />
         </div>
-        <SubmitButton text="회원 가입" />
+        <SubmitButton text={loading ? "Loading..." : "회원 가입"} />
       </Wrapper>
     </Layout>
   );

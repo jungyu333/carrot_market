@@ -81,10 +81,11 @@ export default function Input({
         <>
           <InputLabel $labelBold={labelBold}>{label}</InputLabel>
           <MemberInput
+            {...register}
             autoComplete="off"
             placeholder={placeholder}
             type="email"
-            required
+            required={required}
           />
         </>
       ) : null}
@@ -107,7 +108,12 @@ export default function Input({
             <span className="flex select-none items-center  justify-center rounded-l-md border border-r-0 border-gray-300 bg-gray-50 px-3 text-sm text-gray-500">
               +82
             </span>
-            <NonMemberInput required autoComplete="off" type="text" />
+            <NonMemberInput
+              {...register}
+              required={required}
+              autoComplete="off"
+              type="text"
+            />
           </div>
         </>
       ) : null}

@@ -4,6 +4,8 @@ import { useState } from "react";
 import tw from "tailwind-styled-components";
 import Input from "@components/Input";
 import SubmitButton from "@components/submitButton";
+import { useForm } from "react-hook-form";
+import useMutaion from "@libs/client/useMutation";
 
 const Wrapper = tw.div`
   mt-16
@@ -94,18 +96,36 @@ const CreatedBy = tw.div`
     border-t
 `;
 
+interface FormData {
+  email?: string;
+  phone?: string;
+  password: string;
+}
+
 const Enter: NextPage = () => {
+  const { register, handleSubmit, reset } = useForm<FormData>();
   const router = useRouter();
   const [method, setMethod] = useState<"member" | "nonMember">("member");
   const onClickEmail = () => {
     setMethod("member");
+    reset({ phone: "" });
   };
   const onClickPhone = () => {
     setMethod("nonMember");
+    reset({ email: "", password: "" });
   };
   const onClickNewMember = () => {
     router.push("/enter/newMember");
   };
+  const [newNonUser, { loading, data }] = useMutaion("/api/users/newNonUser");
+
+  const onValid = (validForm: FormData) => {
+    if (method === "nonMember") {
+      if (loading) return;
+      newNonUser(validForm);
+    }
+  };
+
   return (
     <Wrapper>
       <Title>Enter to Carrot</Title>
@@ -120,12 +140,27 @@ const Enter: NextPage = () => {
           </PhoneMethod>
         </MethodContainer>
       </MethodWrapper>
-      <FormWrapper>
+      <FormWrapper onSubmit={handleSubmit(onValid)}>
         {method === "member" ? (
-          <Input type="member" label="Email Address" />
+          <div className="space-y-2">
+            <Input
+              register={register("email")}
+              type="member"
+              label="Email Address"
+            />
+            <Input
+              type="text"
+              label="Password"
+              register={register("password")}
+            />
+          </div>
         ) : null}
         {method === "nonMember" ? (
-          <Input type="nonMember" label="Phone Number" />
+          <Input
+            register={register("phone")}
+            type="nonMember"
+            label="Phone Number"
+          />
         ) : null}
         <NewMember onClick={onClickNewMember}>회원가입</NewMember>
         <SubmitButtonContainer>
