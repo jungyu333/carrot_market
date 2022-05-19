@@ -35,26 +35,8 @@ async function handler(
       },
     },
   });
-  // if (email) {
-  //   const sendEmail = await transporter
-  //     .sendMail({
-  //       from: `Carrot Market`,
-  //       to: email,
-  //       subject: "token",
-  //       text: `your login token is ${payload}`,
-  //       html: `
-  //       <div style="text-align: center;">
-  //         <h3 style="color: #FA5882">Carrot Market</h3>
-  //         <br />
-  //         <p>your login token is ${payload}</p>
-  //       </div>
-  //   `,
-  //     })
-  //     .then((result: any) => console.log(result))
-  //     .catch((err: any) => console.log(err));
-  // }
 
   return res.json({ ok: true });
 }
 
-export default withHandler("POST", handler);
+export default withHandler({ method: "POST", handler });

@@ -5,10 +5,12 @@ export interface ResponseType {
   [key: string]: any;
 }
 
-export default function withHandler(
-  method: "POST" | "GET" | "DELETE",
-  fn: (req: NextApiRequest, res: NextApiResponse) => void
-) {
+interface configtype {
+  method: "POST" | "GET" | "DELETE";
+  handler: (req: NextApiRequest, res: NextApiResponse) => void;
+}
+
+export default function withHandler({ method, handler }: configtype) {
   return async function (
     req: NextApiRequest,
     res: NextApiResponse
@@ -17,7 +19,7 @@ export default function withHandler(
       return res.status(404).end();
     }
     try {
-      await fn(req, res);
+      await handler(req, res);
     } catch (error) {
       return res.status(500).json({ error });
     }
