@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import tw from "tailwind-styled-components";
 import Input from "@components/Input";
 import SubmitButton from "@components/submitButton";
@@ -109,10 +109,18 @@ interface NewNonUserMutationResult {
   ok: boolean;
 }
 
+interface ConfirmMutationResult {
+  ok: boolean;
+  message: string;
+}
+
 const Enter: NextPage = () => {
   const { register, handleSubmit, reset } = useForm<FormData>();
-  const { register: tokenRegisger, handleSubmit: tokenhandleSubmit } =
-    useForm<TokenData>();
+  const {
+    register: tokenRegisger,
+    handleSubmit: tokenhandleSubmit,
+    reset: tokenReset,
+  } = useForm<TokenData>();
   const router = useRouter();
   const [method, setMethod] = useState<"member" | "nonMember">("member");
   const onClickEmail = () => {
@@ -129,17 +137,41 @@ const Enter: NextPage = () => {
   const [newNonUser, { loading, data }] = useMutaion<NewNonUserMutationResult>(
     "/api/users/newNonUser"
   );
+  const [userConfirm, { loading: confirmLoading, data: confirmData }] =
+    useMutaion<ConfirmMutationResult>("/api/users/confirm");
 
   const onValid = (validForm: FormData) => {
     if (method === "nonMember") {
       if (loading) return;
       newNonUser(validForm);
     }
+    if (method === "member") {
+      if (confirmLoading) return;
+      userConfirm(validForm);
+    }
+  };
+  const tokenOnValid = (validForm: TokenData) => {
+    if (confirmLoading) return;
+    userConfirm(validForm);
   };
 
-  const tokenOnValid = (validForm: TokenData) => {
-    console.log(validForm);
-  };
+  useEffect(() => {
+    if (confirmData?.message === "token is correct") {
+      router.push("/");
+    } else if (confirmData?.message === "token is not correct") {
+      alert("잘못된 토큰 번호 입니다");
+      tokenReset();
+    }
+    if (confirmData?.message === "email is not correct") {
+      alert("존재하지 않는 이메일입니다. 회원가입을 해주세요");
+      reset();
+    } else if (confirmData?.message === "password is not correct") {
+      alert("잘못된 비밀번호 입니다.");
+      reset({ password: "" });
+    } else if (confirmData?.message === "email is correct") {
+      router.push("/");
+    }
+  }, [confirmData, tokenReset, router, reset]);
 
   return (
     <Wrapper>
@@ -162,6 +194,9 @@ const Enter: NextPage = () => {
             label="Token Number"
             register={tokenRegisger("token")}
           />
+          <span className="text-sm text-gray-400">
+            입력한 이메일로 보내진 토큰 번호를 입력해주세요
+          </span>
           <SubmitButtonContainer>
             <SubmitButton text="Enter" />
           </SubmitButtonContainer>
@@ -176,7 +211,7 @@ const Enter: NextPage = () => {
                 label="Email Address"
               />
               <Input
-                type="text"
+                type="password"
                 label="Password"
                 register={register("password")}
               />

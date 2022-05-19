@@ -2,7 +2,14 @@ import { UseFormRegisterReturn } from "react-hook-form";
 import tw from "tailwind-styled-components";
 
 interface InputProps {
-  type: "member" | "nonMember" | "text" | "price" | "email" | "phone";
+  type:
+    | "member"
+    | "nonMember"
+    | "text"
+    | "price"
+    | "email"
+    | "phone"
+    | "password";
   label: string;
   labelBold?: boolean;
   placeholder?: string;
@@ -154,6 +161,18 @@ export default function Input({
             {...register}
             autoComplete="off"
             type="text"
+            placeholder={placeholder}
+            required={required}
+          />
+        </>
+      ) : null}
+      {type === "password" ? (
+        <>
+          <InputLabel $labelBold={labelBold}>{label}</InputLabel>
+          <MemberInput
+            {...register}
+            autoComplete="off"
+            type="password"
             placeholder={placeholder}
             required={required}
           />
