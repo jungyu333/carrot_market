@@ -228,7 +228,7 @@ const Enter: NextPage = () => {
             <NewMember onClick={onClickNewMember}>회원가입</NewMember>
           ) : null}
           <SubmitButtonContainer>
-            <SubmitButton text="Enter" />
+            <SubmitButton text={loading ? "Loading..." : "Enter"} />
           </SubmitButtonContainer>
         </FormWrapper>
       )}

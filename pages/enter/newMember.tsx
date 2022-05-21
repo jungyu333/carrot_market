@@ -72,7 +72,7 @@ const NewMember: NextPage = () => {
         />
         <Error>{errors.email?.message}</Error>
         <Input
-          type="text"
+          type="password"
           label="비밀번호"
           labelBold
           register={register("password", {
