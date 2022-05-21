@@ -1,4 +1,3 @@
-import { loadavg } from "os";
 import { useState } from "react";
 
 type useMutaionResult<T> = [(data?: any) => void, UseMutaionState<T>];

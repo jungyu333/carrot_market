@@ -13,7 +13,7 @@ const Wrapper = tw.div`
 
 const Home: NextPage = () => {
   return (
-    <Layout title="Home" hasTabBar canGoBack={false} isLogIn>
+    <Layout title="Home" hasTabBar isLogIn>
       <Wrapper>
         {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((i) => (
           <Item

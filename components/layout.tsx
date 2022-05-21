@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
+import useSWR from "swr";
+
 import tw from "tailwind-styled-components";
 
 interface LayoutProps {
@@ -119,15 +121,20 @@ const IconName = tw.span`
 export default function Layout({
   title,
   canGoBack = false,
-  hasTabBar,
   isLogIn = false,
+  hasTabBar,
   children,
 }: LayoutProps) {
   const router = useRouter();
+
   const onClickBack = () => {
     router.back();
   };
-  console.log(router.pathname);
+
+  const onClickLogOut = () => {
+    fetch("/api/users/logout");
+    router.replace("/enter");
+  };
   return (
     <div>
       <Header>
@@ -152,7 +159,11 @@ export default function Layout({
           <div></div>
         )}
         <Title>{title}</Title>
-        {isLogIn ? <LogOut>로그아웃</LogOut> : <div></div>}
+        {isLogIn ? (
+          <LogOut onClick={onClickLogOut}>로그아웃</LogOut>
+        ) : (
+          <div></div>
+        )}
       </Header>
       {children}
       {hasTabBar ? (
