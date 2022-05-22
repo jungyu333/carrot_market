@@ -5,6 +5,7 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import { Product, User } from "@prisma/client";
 import items from "pages/api/items";
+import Link from "next/link";
 
 const Wrapper = tw.div`
   mt-16
@@ -115,7 +116,6 @@ const Description = tw.div`
 
 const SimilarWrapper = tw.div`
   mt-5
-  border-b
   pb-4
   space-y-2
 `;
@@ -208,10 +208,12 @@ const ItemDetail: NextPage = () => {
           )}
           <SimilarContainer>
             {data?.relatedProducts.map((relatedItem) => (
-              <SimilarProduct key={relatedItem.id}>
-                <SimilarImage />
-                <SimilarName>{relatedItem.name}</SimilarName>
-              </SimilarProduct>
+              <Link key={relatedItem.id} href={`/items/${relatedItem.id}`}>
+                <SimilarProduct>
+                  <SimilarImage />
+                  <SimilarName>{relatedItem.name}</SimilarName>
+                </SimilarProduct>
+              </Link>
             ))}
           </SimilarContainer>
         </SimilarWrapper>
