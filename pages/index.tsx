@@ -4,6 +4,8 @@ import tw from "tailwind-styled-components";
 import Layout from "@components/layout";
 import Item from "@components/item";
 import FloatingButton from "@components/floatingButton";
+import useSWR from "swr";
+import { Product, User } from "@prisma/client";
 
 const Wrapper = tw.div`
   mt-14
@@ -11,18 +13,29 @@ const Wrapper = tw.div`
   mb-20
 `;
 
+interface ProductWithUser extends Product {
+  user: User;
+}
+
+interface ProductsResponse {
+  ok: boolean;
+  products: ProductWithUser[];
+}
+
 const Home: NextPage = () => {
+  const { data } = useSWR<ProductsResponse>("/api/items");
+
   return (
     <Layout title="Home" hasTabBar isLogIn>
       <Wrapper>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16].map((i) => (
+        {data?.products.map((product) => (
           <Item
-            name="jungyu"
-            productName="Iphone 14"
+            name={product.user.name}
+            productName={product.name}
             heart={2}
-            price={99}
-            key={i}
-            id={i}
+            price={product.price}
+            key={product.id}
+            id={product.id}
           />
         ))}
 
