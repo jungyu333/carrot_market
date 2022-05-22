@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
-import Link from "next/link";
 import tw from "tailwind-styled-components";
 import Layout from "@components/layout";
 import Item from "@components/item";
 import FloatingButton from "@components/floatingButton";
-import useSWR from "swr";
 import { Product, User } from "@prisma/client";
+import useSWRInfinite from "swr/infinite";
+import React, { useEffect } from "react";
 
 const Wrapper = tw.div`
   mt-14
@@ -20,22 +20,43 @@ interface ProductWithUser extends Product {
 interface ProductsResponse {
   ok: boolean;
   products: ProductWithUser[];
+  pages: number;
 }
 
 const Home: NextPage = () => {
-  const { data } = useSWR<ProductsResponse>("/api/items");
+  const getKey = (pageIndex: number, previousPageData: ProductsResponse) => {
+    if (pageIndex === 0) return `/api/items?page=1`;
+    if (pageIndex + 1 > previousPageData.pages) return null;
+    return `/api/products?page=${pageIndex + 1}`;
+  };
+  const { data, size, setSize } = useSWRInfinite<ProductsResponse>(getKey);
+  const products = data ? data.map((item) => item.products).flat() : [];
+  function handleScroll() {
+    if (
+      document.documentElement.scrollTop + window.innerHeight ===
+      document.documentElement.scrollHeight
+    ) {
+      setSize((p) => p + 1);
+    }
+  }
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  });
 
   return (
     <Layout title="Home" hasTabBar isLogIn>
       <Wrapper>
-        {data?.products.map((product) => (
+        {products?.map((product) => (
           <Item
-            name={product.user.name}
-            productName={product.name}
+            name={product?.user.name}
+            productName={product?.name}
             heart={2}
-            price={product.price}
-            key={product.id}
-            id={product.id}
+            price={product?.price}
+            key={product?.id}
+            id={product?.id}
           />
         ))}
 
