@@ -3,6 +3,9 @@ import tw from "tailwind-styled-components";
 import Layout from "@components/layout";
 import SubmitButton from "@components/submitButton";
 import TextArea from "@components/textArea";
+import useSWR from "swr";
+import { useRouter } from "next/router";
+import { Post, User } from "@prisma/client";
 
 const Wrapper = tw.div`
   mt-16
@@ -169,7 +172,21 @@ const AnswerForm = tw.div`
   mt-10
   px-3
 `;
+
+interface PostWithUser extends Post {
+  user: User;
+}
+
+interface PostResponse {
+  ok: boolean;
+  post: PostWithUser;
+}
+
 const CommunicateDetail: NextPage = () => {
+  const router = useRouter();
+  const { data } = useSWR<PostResponse>(
+    router.query.id ? `/api/communicate/${router.query.id}` : ""
+  );
   return (
     <Layout canGoBack isLogIn title="궁금해요">
       <Wrapper>
@@ -177,11 +194,11 @@ const CommunicateDetail: NextPage = () => {
           <UserContainer>
             <Avatar />
             <UserInfoContainer>
-              <UserName>jungyu</UserName>
+              <UserName>{data?.post?.user.name}</UserName>
               <ViewProfile>View Profile</ViewProfile>
             </UserInfoContainer>
           </UserContainer>
-          <QuestionTime>11:20</QuestionTime>
+          <QuestionTime>{data?.post?.createdAt}</QuestionTime>
         </UserWrapper>
         <CommentWrapper>
           <CommentContainer>
@@ -222,10 +239,10 @@ const CommunicateDetail: NextPage = () => {
         <QuestionWrapper>
           <QuestionTitle>
             <Q>Q.</Q>
-            <Title>What are you Doing?</Title>
+            <Title>{data?.post?.title}</Title>
           </QuestionTitle>
           <Question>
-            <QuestionContext>happy Coding!</QuestionContext>
+            <QuestionContext>{data?.post?.question}</QuestionContext>
           </Question>
         </QuestionWrapper>
         <AnswerWrapper>

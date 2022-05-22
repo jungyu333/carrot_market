@@ -8,20 +8,10 @@ async function handler(
   res: NextApiResponse<ResponseType>
 ) {
   const {
-    session: { user },
-    body: { title, question },
+    query: { page },
   } = req;
-
-  const newPost = await client.post.create({
-    data: {
-      title,
-      question,
-      user: {
-        connect: {
-          id: user?.id,
-        },
-      },
-    },
+  const postCount = await client.post.count();
+  const posts = await client.post.findMany({
     include: {
       user: {
         select: {
@@ -30,14 +20,17 @@ async function handler(
         },
       },
     },
+
+    take: 10,
+    skip: (+page - 1) * 10,
   });
 
-  res.json({ ok: true, newPost });
+  res.json({ ok: true, posts, pages: Math.ceil(postCount / 10) });
 }
 
 export default withApiSession(
   withHandler({
-    methods: ["POST"],
+    methods: ["GET"],
     handler,
   })
 );

@@ -6,6 +6,9 @@ import TextArea from "@components/textArea";
 import { NextPage } from "next";
 import { useForm } from "react-hook-form";
 import useMutaion from "@libs/client/useMutation";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
+import { Post } from "@prisma/client";
 
 const Wrapper = tw.form`
   mt-20
@@ -41,17 +44,30 @@ interface FormData {
   question: string;
 }
 
+interface postMutateResult {
+  ok: boolean;
+  newPost: Post;
+}
+
 const WritePost: NextPage = () => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  const [newPost, { loading }] = useMutaion("/api/communicate/newPost");
+  const [newPost, { loading, data }] = useMutaion<postMutateResult>(
+    "/api/communicate/newPost"
+  );
   const onValid = (validForm: FormData) => {
     if (loading) return;
     newPost(validForm);
   };
+  useEffect(() => {
+    if (data?.ok) {
+      router.replace(`/communicate/${data.newPost.id}`);
+    }
+  }, [router, data]);
   return (
     <Layout canGoBack title="새 글 작성" isLogIn hasTabBar={false}>
       <Wrapper onSubmit={handleSubmit(onValid)}>
@@ -73,7 +89,7 @@ const WritePost: NextPage = () => {
         </MainContainer>
         <Error>{errors.question?.message}</Error>
         <ButtonContainer>
-          <SubmitButton text="Create a Post" />
+          <SubmitButton text={loading ? "Loading..." : "Create a Post"} />
         </ButtonContainer>
       </Wrapper>
     </Layout>

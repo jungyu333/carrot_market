@@ -9,18 +9,12 @@ async function handler(
 ) {
   const {
     session: { user },
-    body: { title, question },
+    query: { id },
   } = req;
 
-  const newPost = await client.post.create({
-    data: {
-      title,
-      question,
-      user: {
-        connect: {
-          id: user?.id,
-        },
-      },
+  const post = await client.post.findUnique({
+    where: {
+      id: +id,
     },
     include: {
       user: {
@@ -31,13 +25,12 @@ async function handler(
       },
     },
   });
-
-  res.json({ ok: true, newPost });
+  res.json({ ok: true, post });
 }
 
 export default withApiSession(
   withHandler({
-    methods: ["POST"],
+    methods: ["GET"],
     handler,
   })
 );

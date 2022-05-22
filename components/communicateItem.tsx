@@ -84,7 +84,7 @@ export default function CommunicateItem({
         </PostInfoContainer>
         <PostSubInfoContainer>
           <Time>{createdAt}</Time>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center justify-end space-x-2">
             <CommentContainer>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
