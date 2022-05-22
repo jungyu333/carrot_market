@@ -4,8 +4,10 @@ import Layout from "@components/layout";
 import SubmitButton from "@components/submitButton";
 import TextArea from "@components/textArea";
 import { NextPage } from "next";
+import { useForm } from "react-hook-form";
+import useMutaion from "@libs/client/useMutation";
 
-const Wrapper = tw.div`
+const Wrapper = tw.form`
   mt-20
   px-3
 `;
@@ -22,23 +24,54 @@ const MainContainer = tw.div`
   flex-col
   justify-center
   space-y-2
-  py-4
+  pt-2
 `;
 
 const ButtonContainer = tw.div`
   mt-8
 `;
 
+const Error = tw.span`
+  text-red-500
+  text-sm
+`;
+
+interface FormData {
+  title: string;
+  question: string;
+}
+
 const WritePost: NextPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
+  const [newPost, { loading }] = useMutaion("/api/communicate/newPost");
+  const onValid = (validForm: FormData) => {
+    if (loading) return;
+    newPost(validForm);
+  };
   return (
     <Layout canGoBack title="새 글 작성" isLogIn hasTabBar={false}>
-      <Wrapper>
+      <Wrapper onSubmit={handleSubmit(onValid)}>
         <TitleContainer>
-          <Input type="text" label="제목" labelBold />
+          <Input
+            register={register("title", { required: "제목을 입력해주세요" })}
+            type="text"
+            label="제목"
+            labelBold
+          />
         </TitleContainer>
+        <Error>{errors.title?.message}</Error>
         <MainContainer>
-          <TextArea placeholder="Create Post" label="본문" />
+          <TextArea
+            register={register("question", { required: "본문을 입력해주세요" })}
+            placeholder="Create Post"
+            label="본문"
+          />
         </MainContainer>
+        <Error>{errors.question?.message}</Error>
         <ButtonContainer>
           <SubmitButton text="Create a Post" />
         </ButtonContainer>
