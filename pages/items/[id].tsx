@@ -4,8 +4,8 @@ import Layout from "@components/layout";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { Product, User } from "@prisma/client";
-import items from "pages/api/items";
 import Link from "next/link";
+import useMutaion from "@libs/client/useMutation";
 
 const Wrapper = tw.div`
   mt-16
@@ -74,6 +74,8 @@ const Heart = tw.div`
   items-center
   justify-center
   mr-4
+  cursor-pointer
+  hover:text-red-400
 `;
 
 const ButtonContainer = tw.div`
@@ -120,7 +122,7 @@ const SimilarWrapper = tw.div`
   space-y-2
 `;
 
-const SimilarHaeder = tw.h1`
+const SimilarHeader = tw.h1`
   font-bold
   text-lg
 `;
@@ -162,6 +164,13 @@ const ItemDetail: NextPage = () => {
   const { data } = useSWR<productResponse>(
     router.query.id ? `/api/items/${router.query.id}` : null
   );
+  const [clickHeart, { loading, data: favData }] = useMutaion(
+    router.query.id ? `/api/items/${router.query.id}/fav` : ""
+  );
+  const onClickHeart = () => {
+    if (loading) return;
+    clickHeart({});
+  };
 
   return (
     <Layout canGoBack title="물품 정보" isLogIn>
@@ -177,7 +186,7 @@ const ItemDetail: NextPage = () => {
           </ProductInfoContainer>
           <ProductSubInfoContainer>
             <Price>${data?.product?.price}</Price>
-            <Heart>
+            <Heart onClick={onClickHeart}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-6 w-6"
@@ -204,7 +213,7 @@ const ItemDetail: NextPage = () => {
         </DescriptionWrapper>
         <SimilarWrapper>
           {data?.relatedProducts.length === 0 ? null : (
-            <SimilarHaeder>Similar!</SimilarHaeder>
+            <SimilarHeader>Similar!</SimilarHeader>
           )}
           <SimilarContainer>
             {data?.relatedProducts.map((relatedItem) => (
