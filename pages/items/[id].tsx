@@ -69,13 +69,15 @@ const Price = tw.span`
   pr-4
 `;
 
-const Heart = tw.div`
+const Heart = tw.div<HeartProps>`
   flex
   items-center
   justify-center
   mr-4
   cursor-pointer
+  text-gray-400
   hover:text-red-400
+  ${(p: HeartProps) => (p.$isLiked ? "text-red-500" : "")}
 `;
 
 const ButtonContainer = tw.div`
@@ -149,6 +151,10 @@ const SimilarName = tw.span`
   text-gray-400
 `;
 
+interface HeartProps {
+  $isLiked: boolean;
+}
+
 interface ProductWithUser extends Product {
   user: User;
 }
@@ -157,21 +163,25 @@ interface productResponse {
   ok: boolean;
   product: ProductWithUser;
   relatedProducts: Product[];
+  isLiked: boolean;
 }
 
 const ItemDetail: NextPage = () => {
   const router = useRouter();
-  const { data } = useSWR<productResponse>(
+  const { data, mutate } = useSWR<productResponse>(
     router.query.id ? `/api/items/${router.query.id}` : null
   );
-  const [clickHeart, { loading, data: favData }] = useMutaion(
+  const [clickHeart, { loading }] = useMutaion(
     router.query.id ? `/api/items/${router.query.id}/fav` : ""
   );
+
   const onClickHeart = () => {
     if (loading) return;
     clickHeart({});
+    if (!data) return;
+    mutate({ ...data, isLiked: !data.isLiked }, false);
   };
-
+  console.log(data);
   return (
     <Layout canGoBack title="물품 정보" isLogIn>
       <Wrapper>
@@ -186,21 +196,36 @@ const ItemDetail: NextPage = () => {
           </ProductInfoContainer>
           <ProductSubInfoContainer>
             <Price>${data?.product?.price}</Price>
-            <Heart onClick={onClickHeart}>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
+            <Heart $isLiked={data?.isLiked} onClick={onClickHeart}>
+              {data?.isLiked ? (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              ) : (
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
+              )}
             </Heart>
           </ProductSubInfoContainer>
         </ProductInfoWrapper>
@@ -232,3 +257,6 @@ const ItemDetail: NextPage = () => {
 };
 
 export default ItemDetail;
+{
+  /* */
+}
