@@ -15,6 +15,9 @@ const Wrapper = tw.div`
 
 interface ProductWithUser extends Product {
   user: User;
+  _count: {
+    favorite: number;
+  };
 }
 
 interface ProductsResponse {
@@ -53,7 +56,7 @@ const Home: NextPage = () => {
           <Item
             name={product?.user.name}
             productName={product?.name}
-            heart={2}
+            heart={product._count.favorite}
             price={product?.price}
             key={product?.id}
             id={product?.id}

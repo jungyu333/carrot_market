@@ -19,7 +19,13 @@ async function handler(
           avatar: true,
         },
       },
+      _count: {
+        select: {
+          favorite: true,
+        },
+      },
     },
+
     take: 10,
     skip: (+page - 1) * 10,
   });
