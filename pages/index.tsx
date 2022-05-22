@@ -29,7 +29,7 @@ const Home: NextPage = () => {
     if (pageIndex + 1 > previousPageData.pages) return null;
     return `/api/products?page=${pageIndex + 1}`;
   };
-  const { data, size, setSize } = useSWRInfinite<ProductsResponse>(getKey);
+  const { data, setSize } = useSWRInfinite<ProductsResponse>(getKey);
   const products = data ? data.map((item) => item.products).flat() : [];
   function handleScroll() {
     if (

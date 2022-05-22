@@ -4,6 +4,7 @@ import Layout from "@components/layout";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { Product, User } from "@prisma/client";
+import items from "pages/api/items";
 
 const Wrapper = tw.div`
   mt-16
@@ -153,6 +154,7 @@ interface ProductWithUser extends Product {
 interface productResponse {
   ok: boolean;
   product: ProductWithUser;
+  relatedProducts: Product[];
 }
 
 const ItemDetail: NextPage = () => {
@@ -167,14 +169,14 @@ const ItemDetail: NextPage = () => {
         <ImageContainer></ImageContainer>
         <ProductInfoWrapper>
           <ProductInfoContainer>
-            <ProductName>{data?.product.name}</ProductName>
+            <ProductName>{data?.product?.name}</ProductName>
             <UserContainer>
               <Avatar />
-              <UserName>{data?.product.user?.name}</UserName>
+              <UserName>{data?.product?.user?.name}</UserName>
             </UserContainer>
           </ProductInfoContainer>
           <ProductSubInfoContainer>
-            <Price>${data?.product.price}</Price>
+            <Price>${data?.product?.price}</Price>
             <Heart>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -198,15 +200,17 @@ const ItemDetail: NextPage = () => {
         </ButtonContainer>
         <DescriptionWrapper>
           <DescriptionHeader>Description!</DescriptionHeader>
-          <Description>{data?.product.description}</Description>
+          <Description>{data?.product?.description}</Description>
         </DescriptionWrapper>
         <SimilarWrapper>
-          <SimilarHaeder>Similar!</SimilarHaeder>
+          {data?.relatedProducts.length === 0 ? null : (
+            <SimilarHaeder>Similar!</SimilarHaeder>
+          )}
           <SimilarContainer>
-            {[1, 2, 3, 4, 5, 6, 7].map((item) => (
-              <SimilarProduct key={item}>
+            {data?.relatedProducts.map((relatedItem) => (
+              <SimilarProduct key={relatedItem.id}>
                 <SimilarImage />
-                <SimilarName>camera box</SimilarName>
+                <SimilarName>{relatedItem.name}</SimilarName>
               </SimilarProduct>
             ))}
           </SimilarContainer>
