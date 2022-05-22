@@ -44,12 +44,14 @@ const ProductSubInfoContainer = tw.div`
   flex
   flex-col
   justify-center
+  items-end
   space-y-3
 `;
 
 const Price = tw.div`
   font-bold
   text-gray-600
+  
 `;
 
 const Heart = tw.div`

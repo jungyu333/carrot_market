@@ -1,6 +1,9 @@
 import { NextPage } from "next";
 import tw from "tailwind-styled-components";
 import Layout from "@components/layout";
+import useSWR from "swr";
+import { useRouter } from "next/router";
+import { Product, User } from "@prisma/client";
 
 const Wrapper = tw.div`
   mt-16
@@ -56,6 +59,7 @@ const ProductSubInfoContainer = tw.div`
   flex
   flex-col
   space-y-3
+  items-end
 `;
 
 const Price = tw.span`
@@ -67,6 +71,7 @@ const Heart = tw.div`
   flex
   items-center
   justify-center
+  mr-4
 `;
 
 const ButtonContainer = tw.div`
@@ -100,9 +105,11 @@ const DescriptionHeader = tw.h1`
 
 const Description = tw.div`
   w-full
-  bg-slate-400
+  bg-slate-100
   h-48
   scroll-auto
+  p-2
+  rounded-md
 `;
 
 const SimilarWrapper = tw.div`
@@ -138,21 +145,36 @@ const SimilarName = tw.span`
   text-sm
   text-gray-400
 `;
+
+interface ProductWithUser extends Product {
+  user: User;
+}
+
+interface productResponse {
+  ok: boolean;
+  product: ProductWithUser;
+}
+
 const ItemDetail: NextPage = () => {
+  const router = useRouter();
+  const { data } = useSWR<productResponse>(
+    router.query.id ? `/api/items/${router.query.id}` : null
+  );
+
   return (
-    <Layout canGoBack title="물품 정보" hasTabBar={false} isLogIn>
+    <Layout canGoBack title="물품 정보" isLogIn>
       <Wrapper>
         <ImageContainer></ImageContainer>
         <ProductInfoWrapper>
           <ProductInfoContainer>
-            <ProductName>Camera</ProductName>
+            <ProductName>{data?.product.name}</ProductName>
             <UserContainer>
               <Avatar />
-              <UserName>Jungyu</UserName>
+              <UserName>{data?.product.user?.name}</UserName>
             </UserContainer>
           </ProductInfoContainer>
           <ProductSubInfoContainer>
-            <Price>$12</Price>
+            <Price>${data?.product.price}</Price>
             <Heart>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -176,7 +198,7 @@ const ItemDetail: NextPage = () => {
         </ButtonContainer>
         <DescriptionWrapper>
           <DescriptionHeader>Description!</DescriptionHeader>
-          <Description></Description>
+          <Description>{data?.product.description}</Description>
         </DescriptionWrapper>
         <SimilarWrapper>
           <SimilarHaeder>Similar!</SimilarHaeder>
