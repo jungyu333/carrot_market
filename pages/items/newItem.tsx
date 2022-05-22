@@ -4,8 +4,13 @@ import Input from "@components/Input";
 import Layout from "@components/layout";
 import SubmitButton from "@components/submitButton";
 import TextArea from "@components/textArea";
+import { useForm } from "react-hook-form";
+import useMutaion from "@libs/client/useMutation";
+import { Product } from "@prisma/client";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
-const Wrapper = tw.div`
+const Wrapper = tw.form`
   mt-16
   px-4
  
@@ -33,25 +38,49 @@ const ImageInput = tw.input`
   hidden
 `;
 
-const ProductNameContainer = tw.div`
+const InputContainer = tw.div`
   space-y-2
-  mb-4
+  mb-2
 `;
 
-const PriceContainer = tw.div`
-  space-y-2
-  mb-4
+const Error = tw.span`
+  text-sm
+  text-gray-500
 `;
 
-const DescriptionContainer = tw.div`
-  space-y-2
-  mb-4
-`;
+interface FormData {
+  name: string;
+  price: number;
+  description: string;
+}
+
+interface productMutationResult {
+  ok: boolean;
+  product: Product;
+}
 
 const NewItem: NextPage = () => {
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
+  const [newItem, { loading, data }] =
+    useMutaion<productMutationResult>("/api/items/newItem");
+  const onValid = (validForm: FormData) => {
+    if (loading) return;
+    newItem(validForm);
+  };
+  useEffect(() => {
+    if (data?.ok) {
+      router.replace(`/items/${data.product.id}`);
+    }
+  }, [router, data]);
+
   return (
-    <Layout title="물건 등록" canGoBack isLogIn hasTabBar={false}>
-      <Wrapper>
+    <Layout title="물건 등록" canGoBack isLogIn>
+      <Wrapper onSubmit={handleSubmit(onValid)}>
         <ImageContainer>
           <ImageLabel>
             <svg
@@ -71,17 +100,37 @@ const NewItem: NextPage = () => {
             <ImageInput accept="image/*" type="file" />
           </ImageLabel>
         </ImageContainer>
-        <ProductNameContainer>
-          <Input type="text" label="Product Name" labelBold />
-        </ProductNameContainer>
-        <PriceContainer>
-          <Input type="price" label="Price" labelBold />
-        </PriceContainer>
-        <DescriptionContainer>
-          <TextArea label="Description" placeholder="Description" />
-        </DescriptionContainer>
+        <InputContainer>
+          <Input
+            register={register("name", {
+              required: "물건 이름을 입력해주세요",
+            })}
+            type="text"
+            label="name"
+            labelBold
+          />
+        </InputContainer>
+        <Error>{errors.name?.message}</Error>
+        <InputContainer>
+          <Input
+            register={register("price", {
+              required: "물건 가격을 입력해주세요($)",
+            })}
+            type="price"
+            label="Price"
+            labelBold
+          />
+        </InputContainer>
+        <Error>{errors.price?.message}</Error>
+        <InputContainer>
+          <TextArea
+            register={register("description")}
+            label="Description"
+            placeholder="Description"
+          />
+        </InputContainer>
 
-        <SubmitButton text="Upload Item" />
+        <SubmitButton text={loading ? "Loading..." : "Upload Item"} />
       </Wrapper>
     </Layout>
   );

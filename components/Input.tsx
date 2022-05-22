@@ -146,7 +146,7 @@ export default function Input({
           <div className="relative">
             <PriceInput
               {...register}
-              autocomplete="off"
+              autoComplete="off"
               type="text"
               placeholder="0.00"
               required={required}
