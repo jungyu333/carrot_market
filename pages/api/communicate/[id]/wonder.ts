@@ -1,7 +1,7 @@
 import withHandler, { ResponseType } from "@libs/server/withHandler";
 import { withApiSession } from "@libs/server/withSession";
 import { NextApiRequest, NextApiResponse } from "next";
-import client from "../../../libs/server/client";
+import client from "../../../../libs/server/client";
 
 async function handler(
   req: NextApiRequest,
@@ -11,26 +11,39 @@ async function handler(
     session: { user },
     query: { id },
   } = req;
-
-  const post = await client.post.findUnique({
+  const exists = await client.wondering.findFirst({
     where: {
-      id: +id,
+      userId: user?.id,
+      postId: +id,
     },
-    include: {
+  });
+  if (exists) {
+    await client.wondering.delete({
+      where: {
+        id: exists.id,
+      },
+    });
+  }
+  await client.wondering.create({
+    data: {
       user: {
-        select: {
-          name: true,
-          avatar: true,
+        connect: {
+          id: user?.id,
+        },
+      },
+      post: {
+        connect: {
+          id: +id,
         },
       },
     },
   });
-  res.json({ ok: true, post });
+  res.json({ ok: true });
 }
 
 export default withApiSession(
   withHandler({
-    methods: ["GET"],
+    methods: ["POST"],
     handler,
   })
 );

@@ -6,6 +6,7 @@ import TextArea from "@components/textArea";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import { Post, User } from "@prisma/client";
+import useMutaion from "@libs/client/useMutation";
 
 const Wrapper = tw.div`
   mt-16
@@ -120,7 +121,7 @@ const QuestionContext = tw.div`
 
 const AnswerWrapper = tw.div`
   divide-y-[1px]
-  
+  mt-4
 `;
 
 const AnswerContainer = tw.div`
@@ -187,6 +188,13 @@ const CommunicateDetail: NextPage = () => {
   const { data } = useSWR<PostResponse>(
     router.query.id ? `/api/communicate/${router.query.id}` : ""
   );
+  const [wonder, { loading }] = useMutaion(
+    `/api/communicate/${router.query.id}/wonder`
+  );
+  const onClickWondering = () => {
+    if (loading) return;
+    wonder({});
+  };
   return (
     <Layout canGoBack isLogIn title="궁금해요">
       <Wrapper>
@@ -198,10 +206,12 @@ const CommunicateDetail: NextPage = () => {
               <ViewProfile>View Profile</ViewProfile>
             </UserInfoContainer>
           </UserContainer>
-          <QuestionTime>{data?.post?.createdAt}</QuestionTime>
+          <QuestionTime>
+            {data?.post.createdAt.toString().split("T", 1)}
+          </QuestionTime>
         </UserWrapper>
         <CommentWrapper>
-          <CommentContainer>
+          <CommentContainer onClick={onClickWondering}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"
@@ -216,7 +226,7 @@ const CommunicateDetail: NextPage = () => {
                 d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <Comment>궁금해요 2</Comment>
+            <Comment>궁금해요</Comment>
           </CommentContainer>
           <CommentContainer>
             <svg

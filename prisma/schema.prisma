@@ -13,19 +13,21 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   phone     Int?
-  email     String?    @unique
+  email     String?     @unique
   name      String
   avatar    String?
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  introduce String?    @default("Introduce is Non")
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  introduce String?     @default("Introduce is Non")
   password  String
   tokens    Token[]
   product   Product[]
   favorite  Favorite[]
   post      Post[]
+  answer    Answer[]
+  wondering Wondering[]
 }
 
 model Token {
@@ -61,11 +63,34 @@ model Favorite {
 }
 
 model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id        Int         @id @default(autoincrement())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
   question  String
   title     String
+  answer    Answer[]
+  Wondering Wondering[]
+}
+
+model Answer {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  answer    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+}
+
+model Wondering {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
 }

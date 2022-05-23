@@ -49,7 +49,7 @@ const Communicate: NextPage = () => {
   });
 
   return (
-    <Layout title="커뮤니티" hasTabBar isLogIn canGoBack={false}>
+    <Layout title="커뮤니티" hasTabBar isLogIn>
       <Wrapper>
         {posts?.map((post) => (
           <CommunicateItem
@@ -58,7 +58,7 @@ const Communicate: NextPage = () => {
             questionTitle={post.title}
             name={post.user.name}
             comment={4}
-            createdAt={post.createdAt.toString()}
+            createdAt={post.createdAt.toString().split("T", 1) + ""}
             badgeText="궁금해요!"
             wondering={3}
           />
