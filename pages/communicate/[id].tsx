@@ -7,6 +7,7 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import { Post, User } from "@prisma/client";
 import useMutaion from "@libs/client/useMutation";
+import AnswerItem from "@components/answerItem";
 
 const Wrapper = tw.div`
   mt-16
@@ -125,52 +126,7 @@ const AnswerWrapper = tw.div`
   mt-4
 `;
 
-const AnswerContainer = tw.div`
-  flex
-  items-center
-  justify-between
-  space-x-3
-  px-3
-  py-2
-  
-`;
-
-const AnswerInfoContainer = tw.div`
-  flex 
-  space-x-3
-`;
-
-const AnswerAvatar = tw.div`
-  bg-slate-300
-  w-12
-  h-12
-  rounded-full
-`;
-
-const AnswerUserContainer = tw.div`
-  flex
-  flex-col
-  justify-center
-  space-y-1
-  -mt-1
-`;
-
-const AnswerUserName = tw.span`
-  font-bold
-`;
-
-const Answer = tw.p`
-  text-sm
-  text-gray-500
-`;
-
-const AnswerTime = tw.span`
-  text-sm
-  text-gray-400
-  pr-2
-`;
-
-const AnswerForm = tw.div`
+const AnswerForm = tw.form`
   mt-10
   px-3
 `;
@@ -267,16 +223,7 @@ const CommunicateDetail: NextPage = () => {
           </Question>
         </QuestionWrapper>
         <AnswerWrapper>
-          <AnswerContainer>
-            <AnswerInfoContainer>
-              <AnswerAvatar />
-              <AnswerUserContainer>
-                <AnswerUserName>jun</AnswerUserName>
-                <Answer>good!</Answer>
-              </AnswerUserContainer>
-            </AnswerInfoContainer>
-            <AnswerTime>5시간 전</AnswerTime>
-          </AnswerContainer>
+          <AnswerItem name="jun" answer="good" time={Date.now()} />
         </AnswerWrapper>
         <AnswerForm>
           <TextArea placeholder="your answer" />
