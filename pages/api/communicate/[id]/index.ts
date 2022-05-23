@@ -25,7 +25,19 @@ async function handler(
       },
     },
   });
-  res.json({ ok: true, post });
+  const isWondering = Boolean(
+    await client.wondering.findFirst({
+      where: {
+        userId: user?.id,
+        postId: +id,
+      },
+      select: {
+        id: true,
+      },
+    })
+  );
+
+  res.json({ ok: true, post, isWondering });
 }
 
 export default withApiSession(

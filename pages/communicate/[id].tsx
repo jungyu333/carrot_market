@@ -65,21 +65,22 @@ const CommentWrapper = tw.div`
   py-2
   space-x-3
   border-b
+ 
 `;
 
-const CommentContainer = tw.div`
-  
+const CommentContainer = tw.div<CommentProps>`
   flex
   items-center
   space-x-2
   cursor-pointer
-  
+  ${(p: CommentProps) => (p.$isWondering ? "text-teal-500" : "")}
 `;
 
 const Comment = tw.span`
   text-sm
   text-gray-500
   hover:text-gray-700
+ 
 `;
 
 const QuestionWrapper = tw.div`
@@ -174,6 +175,10 @@ const AnswerForm = tw.div`
   px-3
 `;
 
+interface CommentProps {
+  $isWondering: boolean;
+}
+
 interface PostWithUser extends Post {
   user: User;
 }
@@ -181,11 +186,12 @@ interface PostWithUser extends Post {
 interface PostResponse {
   ok: boolean;
   post: PostWithUser;
+  isWondering: boolean;
 }
 
 const CommunicateDetail: NextPage = () => {
   const router = useRouter();
-  const { data } = useSWR<PostResponse>(
+  const { data, mutate } = useSWR<PostResponse>(
     router.query.id ? `/api/communicate/${router.query.id}` : ""
   );
   const [wonder, { loading }] = useMutaion(
@@ -194,6 +200,8 @@ const CommunicateDetail: NextPage = () => {
   const onClickWondering = () => {
     if (loading) return;
     wonder({});
+    if (!data) return;
+    mutate({ ...data, isWondering: !data?.isWondering }, false);
   };
   return (
     <Layout canGoBack isLogIn title="궁금해요">
@@ -207,11 +215,14 @@ const CommunicateDetail: NextPage = () => {
             </UserInfoContainer>
           </UserContainer>
           <QuestionTime>
-            {data?.post.createdAt.toString().split("T", 1)}
+            {data?.post?.createdAt.toString().split("T", 1)}
           </QuestionTime>
         </UserWrapper>
         <CommentWrapper>
-          <CommentContainer onClick={onClickWondering}>
+          <CommentContainer
+            $isWondering={data?.isWondering}
+            onClick={onClickWondering}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-4 w-4"

@@ -17,6 +17,9 @@ const Wrapper = tw.div`
 
 interface PostWithUser extends Post {
   user: User;
+  _count: {
+    wondering: number;
+  };
 }
 
 interface PostsResponse {
@@ -55,12 +58,12 @@ const Communicate: NextPage = () => {
           <CommunicateItem
             id={post?.id}
             key={post?.id}
-            questionTitle={post.title}
-            name={post.user.name}
+            questionTitle={post?.title}
+            name={post?.user.name}
             comment={4}
-            createdAt={post.createdAt.toString().split("T", 1) + ""}
+            createdAt={post?.createdAt.toString().split("T", 1) + ""}
             badgeText="궁금해요!"
-            wondering={3}
+            wondering={post?._count.wondering}
           />
         ))}
         <FloatingButton href="/communicate/write">

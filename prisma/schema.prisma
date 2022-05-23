@@ -71,7 +71,7 @@ model Post {
   question  String
   title     String
   answer    Answer[]
-  Wondering Wondering[]
+  wondering Wondering[]
 }
 
 model Answer {

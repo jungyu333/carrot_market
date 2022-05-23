@@ -23,21 +23,23 @@ async function handler(
         id: exists.id,
       },
     });
+  } else {
+    await client.wondering.create({
+      data: {
+        user: {
+          connect: {
+            id: user?.id,
+          },
+        },
+        post: {
+          connect: {
+            id: +id,
+          },
+        },
+      },
+    });
   }
-  await client.wondering.create({
-    data: {
-      user: {
-        connect: {
-          id: user?.id,
-        },
-      },
-      post: {
-        connect: {
-          id: +id,
-        },
-      },
-    },
-  });
+
   res.json({ ok: true });
 }
 

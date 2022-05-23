@@ -19,6 +19,11 @@ async function handler(
           avatar: true,
         },
       },
+      _count: {
+        select: {
+          wondering: true,
+        },
+      },
     },
 
     take: 10,
