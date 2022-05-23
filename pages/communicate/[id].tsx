@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { Post, User } from "@prisma/client";
 import useMutaion from "@libs/client/useMutation";
 import AnswerItem from "@components/answerItem";
+import { useForm } from "react-hook-form";
 
 const Wrapper = tw.div`
   mt-16
@@ -131,6 +132,12 @@ const AnswerForm = tw.form`
   px-3
 `;
 
+const Error = tw.span`
+  text-sm
+  text-red-400
+  block
+  mb-2
+`;
 interface CommentProps {
   $isWondering: boolean;
 }
@@ -145,7 +152,16 @@ interface PostResponse {
   isWondering: boolean;
 }
 
+interface FormData {
+  answer: string;
+}
+
 const CommunicateDetail: NextPage = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>();
   const router = useRouter();
   const { data, mutate } = useSWR<PostResponse>(
     router.query.id ? `/api/communicate/${router.query.id}` : ""
@@ -153,11 +169,19 @@ const CommunicateDetail: NextPage = () => {
   const [wonder, { loading }] = useMutaion(
     `/api/communicate/${router.query.id}/wonder`
   );
+  const [answer, { loading: answerLoading }] = useMutaion(
+    `/api/communicate/${router.query.id}/answer`
+  );
+
   const onClickWondering = () => {
     if (loading) return;
     wonder({});
     if (!data) return;
     mutate({ ...data, isWondering: !data?.isWondering }, false);
+  };
+  const onValid = (validForm: FormData) => {
+    if (answerLoading) return;
+    answer(validForm);
   };
   return (
     <Layout canGoBack isLogIn title="궁금해요">
@@ -225,8 +249,12 @@ const CommunicateDetail: NextPage = () => {
         <AnswerWrapper>
           <AnswerItem name="jun" answer="good" time={Date.now()} />
         </AnswerWrapper>
-        <AnswerForm>
-          <TextArea placeholder="your answer" />
+        <AnswerForm onSubmit={handleSubmit(onValid)}>
+          <TextArea
+            register={register("answer", { required: "답변을 입력해주세요" })}
+            placeholder="your answer"
+          />
+          <Error>{errors.answer?.message}</Error>
           <SubmitButton text="답변 달기" />
         </AnswerForm>
       </Wrapper>

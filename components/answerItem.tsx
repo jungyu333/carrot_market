@@ -53,9 +53,15 @@ interface AnswerItemProps {
   name: string;
   answer: string;
   time: Date;
+  avatar: string;
 }
 
-export default function AnswerItem({ name, answer, time }: AnswerItemProps) {
+export default function AnswerItem({
+  avatar,
+  name,
+  answer,
+  time,
+}: AnswerItemProps) {
   return (
     <>
       <AnswerContainer>
