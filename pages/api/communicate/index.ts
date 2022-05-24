@@ -22,6 +22,7 @@ async function handler(
       _count: {
         select: {
           wondering: true,
+          answer: true,
         },
       },
     },

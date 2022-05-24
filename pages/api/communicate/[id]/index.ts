@@ -36,6 +36,11 @@ async function handler(
           },
         },
       },
+      _count: {
+        select: {
+          answer: true,
+        },
+      },
     },
   });
   const isWondering = Boolean(

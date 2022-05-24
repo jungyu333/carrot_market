@@ -19,6 +19,7 @@ interface PostWithUser extends Post {
   user: User;
   _count: {
     wondering: number;
+    answer: number;
   };
 }
 
@@ -60,7 +61,7 @@ const Communicate: NextPage = () => {
             key={post?.id}
             questionTitle={post?.title}
             name={post?.user.name}
-            comment={4}
+            comment={post._count.answer}
             createdAt={post?.createdAt.toString().split("T", 1) + ""}
             badgeText="궁금해요!"
             wondering={post?._count.wondering}
