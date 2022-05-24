@@ -161,6 +161,7 @@ const CommunicateDetail: NextPage = () => {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormData>();
   const router = useRouter();
   const { data, mutate } = useSWR<PostResponse>(
@@ -182,6 +183,7 @@ const CommunicateDetail: NextPage = () => {
   const onValid = (validForm: FormData) => {
     if (answerLoading) return;
     answer(validForm);
+    reset();
   };
   return (
     <Layout canGoBack isLogIn title="궁금해요">
