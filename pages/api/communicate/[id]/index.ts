@@ -23,6 +23,19 @@ async function handler(
           avatar: true,
         },
       },
+      answer: {
+        select: {
+          answer: true,
+          createdAt: true,
+          id: true,
+          user: {
+            select: {
+              avatar: true,
+              name: true,
+            },
+          },
+        },
+      },
     },
   });
   const isWondering = Boolean(

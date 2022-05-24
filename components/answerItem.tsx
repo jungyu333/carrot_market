@@ -52,7 +52,7 @@ const AnswerForm = tw.div`
 interface AnswerItemProps {
   name: string;
   answer: string;
-  time: Date;
+  time: string[];
   avatar: string;
 }
 

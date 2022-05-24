@@ -13,6 +13,13 @@ async function handler(
     body: { answer },
   } = req;
 
+  const post = await client.post.findUnique({
+    where: {
+      id: +id,
+    },
+  });
+
+  if (!post) return res.json({ ok: false });
   const newAnswer = await client.answer.create({
     data: {
       answer,
@@ -29,7 +36,7 @@ async function handler(
     },
   });
 
-  res.json({ ok: true });
+  res.json({ ok: true, newAnswer });
 }
 
 export default withApiSession(

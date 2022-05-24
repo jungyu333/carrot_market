@@ -5,10 +5,11 @@ import SubmitButton from "@components/submitButton";
 import TextArea from "@components/textArea";
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import { Post, User } from "@prisma/client";
+import { Answer, Post, User } from "@prisma/client";
 import useMutaion from "@libs/client/useMutation";
 import AnswerItem from "@components/answerItem";
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
 
 const Wrapper = tw.div`
   mt-16
@@ -124,7 +125,8 @@ const QuestionContext = tw.div`
 
 const AnswerWrapper = tw.div`
   divide-y-[1px]
-  mt-4
+  mt-2
+  space-y-2
 `;
 
 const AnswerForm = tw.form`
@@ -142,8 +144,13 @@ interface CommentProps {
   $isWondering: boolean;
 }
 
+interface AnswerWithUser extends Answer {
+  user: User;
+}
+
 interface PostWithUser extends Post {
   user: User;
+  answer: AnswerWithUser[];
 }
 
 interface PostResponse {
@@ -154,6 +161,11 @@ interface PostResponse {
 
 interface FormData {
   answer: string;
+}
+
+interface answerMutationResult {
+  ok: boolean;
+  newAnswer: Answer;
 }
 
 const CommunicateDetail: NextPage = () => {
@@ -170,9 +182,10 @@ const CommunicateDetail: NextPage = () => {
   const [wonder, { loading }] = useMutaion(
     `/api/communicate/${router.query.id}/wonder`
   );
-  const [answer, { loading: answerLoading }] = useMutaion(
-    `/api/communicate/${router.query.id}/answer`
-  );
+  const [answer, { loading: answerLoading, data: answerData }] =
+    useMutaion<answerMutationResult>(
+      `/api/communicate/${router.query.id}/answer`
+    );
 
   const onClickWondering = () => {
     if (loading) return;
@@ -183,8 +196,15 @@ const CommunicateDetail: NextPage = () => {
   const onValid = (validForm: FormData) => {
     if (answerLoading) return;
     answer(validForm);
-    reset();
+    if (!answerData) return;
   };
+  useEffect(() => {
+    if (answerData?.ok) {
+      reset();
+      mutate();
+    }
+  }, [reset, answerData, mutate]);
+
   return (
     <Layout canGoBack isLogIn title="궁금해요">
       <Wrapper>
@@ -249,7 +269,14 @@ const CommunicateDetail: NextPage = () => {
           </Question>
         </QuestionWrapper>
         <AnswerWrapper>
-          <AnswerItem name="jun" answer="good" time={Date.now()} />
+          {data?.post.answer.map((ans) => (
+            <AnswerItem
+              key={ans.id}
+              name={ans.user.name}
+              answer={ans.answer}
+              time={ans.createdAt.toString().split("T", 1)}
+            />
+          ))}
         </AnswerWrapper>
         <AnswerForm onSubmit={handleSubmit(onValid)}>
           <TextArea
@@ -257,7 +284,7 @@ const CommunicateDetail: NextPage = () => {
             placeholder="your answer"
           />
           <Error>{errors.answer?.message}</Error>
-          <SubmitButton text="답변 달기" />
+          <SubmitButton text={answerLoading ? "Loading..." : "답변 달기"} />
         </AnswerForm>
       </Wrapper>
     </Layout>
