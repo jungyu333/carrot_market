@@ -82,8 +82,6 @@ const CommentContainer = tw.div<CommentProps>`
 const Comment = tw.span`
   text-sm
   text-gray-500
-  hover:text-gray-700
- 
 `;
 
 const QuestionWrapper = tw.div`
@@ -140,6 +138,7 @@ const Error = tw.span`
   block
   mb-2
 `;
+
 interface CommentProps {
   $isWondering: boolean;
 }
@@ -171,7 +170,13 @@ interface answerMutationResult {
   newAnswer: Answer;
 }
 
+interface useUserDataResponse {
+  ok: boolean;
+  currentUser: User;
+}
+
 const CommunicateDetail: NextPage = () => {
+  const { data: useUserData } = useSWR<useUserDataResponse>("/api/users/me");
   const {
     register,
     handleSubmit,
@@ -259,7 +264,7 @@ const CommunicateDetail: NextPage = () => {
                 d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
               />
             </svg>
-            <Comment>답변 {data?.post._count.answer}</Comment>
+            <Comment>답변 {data?.post?._count?.answer}</Comment>
           </CommentContainer>
         </CommentWrapper>
         <QuestionWrapper>
@@ -272,12 +277,16 @@ const CommunicateDetail: NextPage = () => {
           </Question>
         </QuestionWrapper>
         <AnswerWrapper>
-          {data?.post.answer.map((ans) => (
+          {data?.post?.answer.map((ans) => (
             <AnswerItem
               key={ans.id}
-              name={ans.user.name}
+              id={ans.id}
+              name={
+                ans.user.id === data.post.user.id ? "글쓴이" : ans.user.name
+              }
               answer={ans.answer}
               time={ans.createdAt.toString().split("T", 1)}
+              canDelete={ans.user.id === data.post.user.id}
             />
           ))}
         </AnswerWrapper>

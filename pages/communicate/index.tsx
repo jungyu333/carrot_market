@@ -61,10 +61,10 @@ const Communicate: NextPage = () => {
             key={post?.id}
             questionTitle={post?.title}
             name={post?.user.name}
-            comment={post._count.answer}
+            comment={post?._count?.answer}
             createdAt={post?.createdAt.toString().split("T", 1) + ""}
             badgeText="궁금해요!"
-            wondering={post?._count.wondering}
+            wondering={post?._count?.wondering}
           />
         ))}
         <FloatingButton href="/communicate/write">

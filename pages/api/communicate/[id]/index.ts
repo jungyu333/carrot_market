@@ -21,6 +21,7 @@ async function handler(
         select: {
           name: true,
           avatar: true,
+          id: true,
         },
       },
       answer: {
@@ -28,10 +29,12 @@ async function handler(
           answer: true,
           createdAt: true,
           id: true,
+
           user: {
             select: {
               avatar: true,
               name: true,
+              id: true,
             },
           },
         },
