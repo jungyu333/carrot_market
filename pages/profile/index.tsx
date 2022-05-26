@@ -82,7 +82,6 @@ interface CurrentUserResponse {
 
 const Profile: NextPage = () => {
   const { data } = useSWR<CurrentUserResponse>("/api/users/me");
-
   return (
     <Layout title="마이페이지" isLogIn hasTabBar>
       <Wrapper>

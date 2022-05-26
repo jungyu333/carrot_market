@@ -2,23 +2,43 @@ import { NextPage } from "next";
 import tw from "tailwind-styled-components";
 import Item from "@components/item";
 import Layout from "@components/layout";
+import useSWR from "swr";
+import { Favorite, Product, User } from "@prisma/client";
 
 const Wrapper = tw.div`
   mt-16
 `;
+interface productWithUser extends Product {
+  _count: {
+    favorite: number;
+  };
+  user: User;
+}
+
+interface favProductResponseWithUser extends Favorite {
+  user: User;
+  product: productWithUser;
+}
+
+interface favProductResponse {
+  ok: boolean;
+  favProducts: favProductResponseWithUser[];
+}
 
 const Fav: NextPage = () => {
+  const { data } = useSWR<favProductResponse>("/api/profile/fav");
+
   return (
-    <Layout canGoBack isLogIn hasTabBar={false} title="관심 목록">
+    <Layout canGoBack isLogIn title="관심 목록">
       <Wrapper>
-        {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+        {data?.favProducts?.map((favProduct) => (
           <Item
-            name="jungyu"
-            price={25}
-            heart={4}
-            productName="IPhone 13"
-            id={i}
-            key={i}
+            name={favProduct.product.user.name}
+            price={favProduct.product.price}
+            heart={favProduct.product._count.favorite}
+            productName={favProduct.product.name}
+            id={favProduct.product.id}
+            key={favProduct.product.id}
           />
         ))}
       </Wrapper>
