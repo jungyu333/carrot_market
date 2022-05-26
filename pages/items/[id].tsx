@@ -181,7 +181,7 @@ const ItemDetail: NextPage = () => {
     if (!data) return;
     mutate({ ...data, isLiked: !data.isLiked }, false);
   };
-  console.log(data);
+
   return (
     <Layout canGoBack title="물품 정보" isLogIn>
       <Wrapper>

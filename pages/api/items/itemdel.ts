@@ -7,36 +7,18 @@ async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseType>
 ) {
-  const {
-    session: { user },
-  } = req;
-
-  const sellProducts = await client.product.findMany({
+  const deleteItemId = req.body;
+  await client.product.delete({
     where: {
-      userId: user?.id,
-    },
-    include: {
-      _count: {
-        select: {
-          favorite: true,
-        },
-      },
-      user: {
-        select: {
-          name: true,
-        },
-      },
+      id: deleteItemId,
     },
   });
-  res.json({
-    ok: true,
-    sellProducts,
-  });
+  res.json({ ok: true });
 }
 
 export default withApiSession(
   withHandler({
-    methods: ["GET"],
+    methods: ["POST"],
     handler,
   })
 );
