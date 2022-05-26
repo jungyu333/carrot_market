@@ -3,6 +3,8 @@ import Link from "next/link";
 import tw from "tailwind-styled-components";
 import Layout from "@components/layout";
 import ListButton from "@components/listButton";
+import useSWR from "swr";
+import { User } from "@prisma/client";
 
 const Wrapper = tw.div`
   mt-16
@@ -73,14 +75,21 @@ const Introduce = tw.div`
   p-3
 `;
 
+interface CurrentUserResponse {
+  ok: boolean;
+  currentUser: User;
+}
+
 const Profile: NextPage = () => {
+  const { data } = useSWR<CurrentUserResponse>("/api/users/me");
+
   return (
     <Layout title="마이페이지" isLogIn hasTabBar>
       <Wrapper>
         <UserWrapper>
           <Avatar />
           <UserInfo>
-            <UserName>jungyu</UserName>
+            <UserName>{data?.currentUser.name}</UserName>
             <Link href="/profile/edit">
               <Edit>Edit Profile</Edit>
             </Link>
@@ -152,7 +161,11 @@ const Profile: NextPage = () => {
           </Link>
         </ListWrapper>
         <span className="  text-2xl font-bold">Introduce!</span>
-        <Introduce>Hello!</Introduce>
+        <Introduce>
+          {data?.currentUser.introduce === ""
+            ? "Introduce is Non!"
+            : data?.currentUser.introduce}
+        </Introduce>
       </Wrapper>
     </Layout>
   );

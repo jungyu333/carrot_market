@@ -286,7 +286,7 @@ const CommunicateDetail: NextPage = () => {
               }
               answer={ans.answer}
               time={ans.createdAt.toString().split("T", 1)}
-              canDelete={ans.user.id === data.post.user.id}
+              canDelete={ans.user.id === useUserData?.currentUser.id}
             />
           ))}
         </AnswerWrapper>
