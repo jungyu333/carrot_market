@@ -9,19 +9,34 @@ async function handler(
 ) {
   const {
     session: { user },
-    body: { name, phone, introduce },
+    body: { name, phone, introduce, avatarId },
   } = req;
 
-  await client.user.update({
-    where: {
-      id: user?.id,
-    },
-    data: {
-      name,
-      phone,
-      introduce,
-    },
-  });
+  if (avatarId) {
+    await client.user.update({
+      where: {
+        id: user?.id,
+      },
+      data: {
+        name,
+        phone,
+        introduce,
+        avatar: avatarId,
+      },
+    });
+  } else if (avatarId === "") {
+    await client.user.update({
+      where: {
+        id: user?.id,
+      },
+      data: {
+        name,
+        phone,
+        introduce,
+        avatar: "",
+      },
+    });
+  }
 
   res.json({ ok: true });
 }

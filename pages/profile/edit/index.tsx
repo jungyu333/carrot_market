@@ -7,7 +7,7 @@ import TextArea from "@components/textArea";
 import useSWR from "swr";
 import { User } from "@prisma/client";
 import { useForm } from "react-hook-form";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useMutaion from "@libs/client/useMutation";
 import { useRouter } from "next/router";
 
@@ -25,14 +25,21 @@ const AvatarContainer = tw.div`
   items-center
 `;
 
-const Avatar = tw.div`
+const Avatar = tw.img`
   bg-slate-300
   w-16
   h-16
   rounded-full
 `;
 
-const EditImage = tw.label`
+const NonAvatar = tw.div`
+bg-slate-300
+  w-16
+  h-16
+  rounded-full
+`;
+
+const Button = tw.label`
   cursor-pointer
   bg-orange-500
   p-2
@@ -65,6 +72,7 @@ interface FormData {
   name: string;
   phone: number;
   introduce: string;
+  avatar?: FileList;
 }
 
 interface UpdateMutaionResult {
@@ -73,12 +81,14 @@ interface UpdateMutaionResult {
 
 const Edit: NextPage = () => {
   const router = useRouter();
+  const [avatarPreview, setAvatarPreview] = useState("");
   const { data } = useSWR<CurrentUserResponse>("/api/users/me");
   const {
     register,
     handleSubmit,
     setValue,
     reset,
+    watch,
     formState: { errors },
   } = useForm<FormData>();
   const [update, { loading, data: updateData }] =
@@ -88,25 +98,71 @@ const Edit: NextPage = () => {
     if (data?.currentUser.phone) setValue("phone", data.currentUser.phone);
     if (data?.currentUser.introduce)
       setValue("introduce", data.currentUser.introduce);
-
+    if (data?.currentUser.avatar)
+      setAvatarPreview(
+        `https://imagedelivery.net/F-5OweihFObpZwkkS-kWHQ/${data?.currentUser.avatar}/avatar`
+      );
     if (updateData && updateData.ok) {
       alert("정보가 수정되었습니다");
       router.replace("/profile");
     }
   }, [setValue, data, updateData, router, reset]);
 
-  const onValid = (validForm: FormData) => {
+  const onValid = async ({ name, phone, introduce, avatar }: FormData) => {
     if (loading) return;
-    update(validForm);
+
+    if (avatar && avatar.length > 0) {
+      const { uploadURL } = await (await fetch(`/api/files`)).json();
+      const form = new FormData();
+      form.append("file", avatar[0], data?.currentUser.id + "");
+      const {
+        result: { id },
+      } = await (
+        await fetch(uploadURL, {
+          method: "POST",
+          body: form,
+        })
+      ).json();
+      update({
+        introduce,
+        phone,
+        name,
+        avatarId: id,
+      });
+    } else {
+      update({
+        introduce,
+        phone,
+        name,
+        avatarId: "",
+      });
+    }
+  };
+  const avatar = watch("avatar");
+  useEffect(() => {
+    if (avatar && avatar.length > 0) {
+      const file = avatar[0];
+      setAvatarPreview(URL.createObjectURL(file));
+    }
+  }, [avatar]);
+  const onClickRemove = () => {
+    setAvatarPreview("");
   };
   return (
     <Layout canGoBack title="내 정보">
       <Wrapper onSubmit={handleSubmit(onValid)}>
         <AvatarContainer>
-          <Avatar />
-          <EditImage htmlFor="image">Edit Image</EditImage>
-          <ImageFile id="image" accept="image/*" type="file" />
+          {avatarPreview ? <Avatar src={avatarPreview} /> : <NonAvatar />}
+          <Button htmlFor="image">Edit Image</Button>
+          <Button onClick={onClickRemove}>Remove Image</Button>
+          <ImageFile
+            {...register("avatar")}
+            id="image"
+            accept="image/*"
+            type="file"
+          />
         </AvatarContainer>
+
         <InputContainer>
           <Input
             register={register("name", { required: "이름을 입력해주세요" })}
@@ -135,7 +191,7 @@ const Edit: NextPage = () => {
           />
         </InputContainer>
 
-        <SubmitButton text="Edit Profile" />
+        <SubmitButton text={loading ? "Loading..." : "Edit Profile"} />
       </Wrapper>
     </Layout>
   );

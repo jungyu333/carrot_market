@@ -15,7 +15,15 @@ const UserWrapper = tw.div`
   flex
 `;
 
-const Avatar = tw.div`
+const Avatar = tw.img`
+  w-20
+  h-20
+  bg-slate-300
+  rounded-full
+  mr-4
+`;
+
+const NonAvatar = tw.div`
   w-20
   h-20
   bg-slate-300
@@ -92,7 +100,13 @@ const Profile: NextPage = () => {
     <Layout title="마이페이지" isLogIn hasTabBar>
       <Wrapper>
         <UserWrapper>
-          <Avatar />
+          {data?.currentUser.avatar ? (
+            <Avatar
+              src={`https://imagedelivery.net/F-5OweihFObpZwkkS-kWHQ/${data?.currentUser.avatar}/avatar`}
+            />
+          ) : (
+            <NonAvatar />
+          )}
           <UserInfo>
             <UserName>{data?.currentUser?.name}</UserName>
             <EditContainer>
