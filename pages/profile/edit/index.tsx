@@ -63,15 +63,12 @@ interface CurrentUserResponse {
 
 interface FormData {
   name: string;
-  email: string;
   phone: number;
   introduce: string;
-  password: string;
 }
 
 interface UpdateMutaionResult {
   ok: boolean;
-  message: string;
 }
 
 const Edit: NextPage = () => {
@@ -87,18 +84,12 @@ const Edit: NextPage = () => {
   const [update, { loading, data: updateData }] =
     useMutaion<UpdateMutaionResult>("/api/users/update");
   useEffect(() => {
-    if (data?.currentUser.email) setValue("email", data.currentUser.email);
     if (data?.currentUser.name) setValue("name", data.currentUser.name);
     if (data?.currentUser.phone) setValue("phone", data.currentUser.phone);
-    if (data?.currentUser.password)
-      setValue("password", data.currentUser.password);
     if (data?.currentUser.introduce)
       setValue("introduce", data.currentUser.introduce);
-    if (updateData && updateData.message === "existed email") {
-      alert("중복된 이메일입니다.");
-      reset({ email: "" });
-    }
-    if (updateData && updateData.message === "updated account") {
+
+    if (updateData && updateData.ok) {
       alert("정보가 수정되었습니다");
       router.replace("/profile");
     }
@@ -126,16 +117,6 @@ const Edit: NextPage = () => {
           />
         </InputContainer>
         <Error>{errors.name?.message}</Error>
-        <InputContainer>
-          <Input
-            register={register("email", { required: "이메일을 입력해주세요" })}
-            type="email"
-            label="Email"
-            labelBold
-            placeholder="email"
-          />
-        </InputContainer>
-        <Error>{errors.email?.message}</Error>
 
         <InputContainer>
           <Input

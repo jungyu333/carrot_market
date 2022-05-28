@@ -36,6 +36,12 @@ const UserName = tw.span`
   text-2xl
 `;
 
+const EditContainer = tw.div`
+  flex 
+  items-center 
+  space-x-2
+`;
+
 const Edit = tw.button`
   text-sm
   text-gray-400
@@ -88,10 +94,15 @@ const Profile: NextPage = () => {
         <UserWrapper>
           <Avatar />
           <UserInfo>
-            <UserName>{data?.currentUser.name}</UserName>
-            <Link href="/profile/edit">
-              <Edit>Edit Profile</Edit>
-            </Link>
+            <UserName>{data?.currentUser?.name}</UserName>
+            <EditContainer>
+              <Link href="/profile/edit">
+                <Edit>Edit Profile</Edit>
+              </Link>
+              <Link href="/profile/edit/password">
+                <Edit>Edit Password</Edit>
+              </Link>
+            </EditContainer>
           </UserInfo>
         </UserWrapper>
         <ListWrapper>

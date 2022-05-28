@@ -9,35 +9,21 @@ async function handler(
 ) {
   const {
     session: { user },
-    body: { name, email, phone, introduce },
+    body: { name, phone, introduce },
   } = req;
 
-  if (email) {
-    const existeduser = await client.user.findUnique({
-      where: {
-        email: email,
-      },
-    });
+  await client.user.update({
+    where: {
+      id: user?.id,
+    },
+    data: {
+      name,
+      phone,
+      introduce,
+    },
+  });
 
-    if (existeduser) {
-      return res.json({ ok: false, message: "existed email" });
-    }
-    if (!existeduser) {
-      const updateUser = await client.user.update({
-        where: {
-          id: user?.id,
-        },
-        data: {
-          name,
-          email,
-          phone,
-          introduce,
-        },
-      });
-      console.log(updateUser);
-      res.json({ ok: true, message: "updated account" });
-    }
-  }
+  res.json({ ok: true });
 }
 
 export default withApiSession(
