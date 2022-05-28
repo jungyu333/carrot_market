@@ -4,8 +4,14 @@ import Input from "@components/Input";
 import Layout from "@components/layout";
 import SubmitButton from "@components/submitButton";
 import TextArea from "@components/textArea";
+import useSWR from "swr";
+import { User } from "@prisma/client";
+import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+import useMutaion from "@libs/client/useMutation";
+import { useRouter } from "next/router";
 
-const Wrapper = tw.div`
+const Wrapper = tw.form`
   mt-20
   px-4
   flex
@@ -44,27 +50,110 @@ const InputContainer = tw.div`
   space-y-2
 `;
 
+const Error = tw.span`
+  text-red-500
+  text-sm
+  
+`;
+
+interface CurrentUserResponse {
+  ok: boolean;
+  currentUser: User;
+}
+
+interface FormData {
+  name: string;
+  email: string;
+  phone: number;
+  introduce: string;
+  password: string;
+}
+
+interface UpdateMutaionResult {
+  ok: boolean;
+  message: string;
+}
+
 const Edit: NextPage = () => {
+  const router = useRouter();
+  const { data } = useSWR<CurrentUserResponse>("/api/users/me");
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>();
+  const [update, { loading, data: updateData }] =
+    useMutaion<UpdateMutaionResult>("/api/users/update");
+  useEffect(() => {
+    if (data?.currentUser.email) setValue("email", data.currentUser.email);
+    if (data?.currentUser.name) setValue("name", data.currentUser.name);
+    if (data?.currentUser.phone) setValue("phone", data.currentUser.phone);
+    if (data?.currentUser.password)
+      setValue("password", data.currentUser.password);
+    if (data?.currentUser.introduce)
+      setValue("introduce", data.currentUser.introduce);
+    if (updateData && updateData.message === "existed email") {
+      alert("중복된 이메일입니다.");
+      reset({ email: "" });
+    }
+    if (updateData && updateData.message === "updated account") {
+      alert("정보가 수정되었습니다");
+      router.replace("/profile");
+    }
+  }, [setValue, data, updateData, router, reset]);
+
+  const onValid = (validForm: FormData) => {
+    if (loading) return;
+    update(validForm);
+  };
   return (
-    <Layout canGoBack title="내 정보" hasTabBar={false} isLogIn={false}>
-      <Wrapper>
+    <Layout canGoBack title="내 정보">
+      <Wrapper onSubmit={handleSubmit(onValid)}>
         <AvatarContainer>
           <Avatar />
           <EditImage htmlFor="image">Edit Image</EditImage>
           <ImageFile id="image" accept="image/*" type="file" />
         </AvatarContainer>
         <InputContainer>
-          <Input type="text" label="Name" labelBold placeholder="name" />
+          <Input
+            register={register("name", { required: "이름을 입력해주세요" })}
+            type="text"
+            label="name"
+            labelBold
+            placeholder="name"
+          />
         </InputContainer>
+        <Error>{errors.name?.message}</Error>
         <InputContainer>
-          <Input type="email" label="Email" labelBold placeholder="email" />
+          <Input
+            register={register("email", { required: "이메일을 입력해주세요" })}
+            type="email"
+            label="Email"
+            labelBold
+            placeholder="email"
+          />
         </InputContainer>
+        <Error>{errors.email?.message}</Error>
+
         <InputContainer>
-          <Input type="phone" label="Phone Number" labelBold />
+          <Input
+            register={register("phone", { required: "번호를 입력해주세요" })}
+            type="phone"
+            label="Phone Number"
+            labelBold
+          />
         </InputContainer>
+        <Error>{errors.phone?.message}</Error>
         <InputContainer>
-          <TextArea placeholder="Introduce" label="Introduce" />
+          <TextArea
+            register={register("introduce")}
+            placeholder="Introduce"
+            label="Introduce"
+          />
         </InputContainer>
+
         <SubmitButton text="Edit Profile" />
       </Wrapper>
     </Layout>
