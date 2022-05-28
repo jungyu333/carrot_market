@@ -6,7 +6,6 @@ import TextArea from "@components/textArea";
 import { useForm } from "react-hook-form";
 import SubmitButton from "@components/submitButton";
 import useMutaion from "../../libs/client/useMutation";
-import useSWR from "swr";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
