@@ -10,6 +10,9 @@ import useMutaion from "@libs/client/useMutation";
 import AnswerItem from "@components/answerItem";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import Image from "next/image";
+import imageUrl from "@libs/client/imageUrl";
+import noAvatar from "../../public/noAvatar.jpeg";
 
 const Wrapper = tw.div`
   mt-16
@@ -27,13 +30,6 @@ const UserWrapper = tw.div`
 const UserContainer = tw.div`
   flex
   space-x-3
-`;
-
-const Avatar = tw.div`
-  bg-slate-400
-  h-16
-  w-16
-  rounded-full
 `;
 
 const UserInfoContainer = tw.div`
@@ -124,11 +120,11 @@ const QuestionContext = tw.div`
 const AnswerWrapper = tw.div`
   divide-y-[1px]
   mt-2
-  space-y-2
+  
 `;
 
 const AnswerForm = tw.form`
-  mt-10
+  mt-5
   px-3
 `;
 
@@ -218,7 +214,25 @@ const CommunicateDetail: NextPage = () => {
       <Wrapper>
         <UserWrapper>
           <UserContainer>
-            <Avatar />
+            {data?.post.user.avatar ? (
+              <Image
+                src={imageUrl(data?.post.user.avatar, "avatar")}
+                alt="avatar"
+                width={80}
+                height={80}
+                className="rounded-full"
+                loading="lazy"
+              />
+            ) : (
+              <Image
+                src={noAvatar}
+                alt="avatar"
+                width={80}
+                height={80}
+                className="rounded-full"
+                placeholder="blur"
+              />
+            )}
             <UserInfoContainer>
               <UserName>{data?.post?.user.name}</UserName>
               <ViewProfile>View Profile</ViewProfile>
@@ -287,6 +301,7 @@ const CommunicateDetail: NextPage = () => {
               answer={ans.answer}
               time={ans.createdAt.toString().split("T", 1)}
               canDelete={ans.user.id === useUserData?.currentUser.id}
+              avatar={ans.user.avatar}
             />
           ))}
         </AnswerWrapper>

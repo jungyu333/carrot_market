@@ -39,6 +39,7 @@ const Fav: NextPage = () => {
             productName={favProduct.product.name}
             id={favProduct.product.id}
             key={favProduct.product.id}
+            avatar={favProduct.product.avatar}
           />
         ))}
       </Wrapper>

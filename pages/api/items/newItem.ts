@@ -36,7 +36,6 @@ async function handler(
         name,
         price: +price,
         description,
-        avatar: "",
         user: {
           connect: {
             id: user?.id,

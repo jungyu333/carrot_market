@@ -60,6 +60,7 @@ const Home: NextPage = () => {
             price={product?.price}
             key={product?.id}
             id={product?.id}
+            avatar={product?.avatar}
           />
         ))}
 

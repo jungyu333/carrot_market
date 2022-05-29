@@ -27,6 +27,7 @@ async function handler(
           id: true,
           name: true,
           price: true,
+          avatar: true,
           user: {
             select: {
               name: true,

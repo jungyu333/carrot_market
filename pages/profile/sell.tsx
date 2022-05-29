@@ -35,6 +35,7 @@ const Sell: NextPage = () => {
             productName={sellProduct?.name}
             price={sellProduct?.price}
             heart={sellProduct?._count.favorite}
+            avatar={sellProduct.avatar}
           />
         ))}
       </Wrapper>

@@ -1,29 +1,26 @@
+import imageUrl from "@libs/client/imageUrl";
 import useMutaion from "@libs/client/useMutation";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useSWRConfig } from "swr";
 import tw from "tailwind-styled-components";
+import noAvatar from "../public/noAvatar.jpeg";
 
 const AnswerContainer = tw.div`
   flex
   items-center
   justify-between
-  space-x-3
   px-3
-  py-2
+  py-3
 `;
 
 const AnswerInfoContainer = tw.div`
   flex 
   items-start
-  
 `;
 
 const AnswerAvatar = tw.div`
-  bg-slate-300
-  w-12
-  h-12
-  rounded-full
   mr-3
 `;
 
@@ -68,7 +65,7 @@ interface AnswerItemProps {
   name: string;
   answer: string;
   time: string[];
-  avatar: string;
+  avatar: string | null;
   canDelete: boolean;
   id: number;
 }
@@ -104,7 +101,29 @@ export default function AnswerItem({
     <>
       <AnswerContainer>
         <AnswerInfoContainer>
-          <AnswerAvatar />
+          {avatar ? (
+            <AnswerAvatar>
+              <Image
+                src={imageUrl(avatar, "avatar")}
+                alt="avatar"
+                width={40}
+                height={40}
+                className="rounded-full"
+                loading="lazy"
+              />
+            </AnswerAvatar>
+          ) : (
+            <AnswerAvatar>
+              <Image
+                src={noAvatar}
+                alt="avatar"
+                width={40}
+                height={40}
+                className="rounded-full"
+                placeholder="blur"
+              />
+            </AnswerAvatar>
+          )}
           <AnswerUserContainer>
             <AnswerUserName>
               {name}

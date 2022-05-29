@@ -6,6 +6,10 @@ import { useRouter } from "next/router";
 import { Product, User } from "@prisma/client";
 import Link from "next/link";
 import useMutaion from "@libs/client/useMutation";
+import Image from "next/image";
+import imageUrl from "@libs/client/imageUrl";
+import noimage from "../../public/noimage.png";
+import noAvatar from "../../public/noAvatar.jpeg";
 
 const Wrapper = tw.div`
   mt-16
@@ -13,8 +17,8 @@ const Wrapper = tw.div`
 `;
 
 const ImageContainer = tw.div`
-  h-72
-  bg-slate-300
+  relative 
+  pb-72
 `;
 
 const ProductInfoWrapper = tw.div`
@@ -137,6 +141,8 @@ const SimilarContainer = tw.div`
 
 const SimilarProduct = tw.div`
   cursor-pointer
+  border
+  p-2
 `;
 
 const SimilarImage = tw.div`
@@ -185,12 +191,49 @@ const ItemDetail: NextPage = () => {
   return (
     <Layout canGoBack title="물품 정보" isLogIn>
       <Wrapper>
-        <ImageContainer></ImageContainer>
+        {data?.product.avatar ? (
+          <ImageContainer>
+            <Image
+              className="object-scale-down"
+              layout="fill"
+              alt="product"
+              src={imageUrl(data?.product.avatar, "public")}
+            />
+          </ImageContainer>
+        ) : (
+          <ImageContainer>
+            <Image
+              src={noimage}
+              className="object-contain"
+              alt="noimage"
+              placeholder="blur"
+              layout="fill"
+            />
+          </ImageContainer>
+        )}
         <ProductInfoWrapper>
           <ProductInfoContainer>
             <ProductName>{data?.product?.name}</ProductName>
             <UserContainer>
-              <Avatar />
+              {data?.product.user.avatar ? (
+                <Image
+                  src={imageUrl(data?.product.user.avatar, "avatar")}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                  loading="lazy"
+                  alt="avatar"
+                />
+              ) : (
+                <Image
+                  src={noAvatar}
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                  placeholder="blur"
+                  alt="avatar"
+                />
+              )}
               <UserName>{data?.product?.user?.name}</UserName>
             </UserContainer>
           </ProductInfoContainer>
@@ -244,7 +287,25 @@ const ItemDetail: NextPage = () => {
             {data?.relatedProducts.map((relatedItem) => (
               <Link key={relatedItem.id} href={`/items/${relatedItem.id}`}>
                 <SimilarProduct>
-                  <SimilarImage />
+                  {relatedItem.avatar ? (
+                    <div className="relative pb-40">
+                      <Image
+                        src={imageUrl(relatedItem.avatar, "public")}
+                        alt="product"
+                        layout="fill"
+                        className="object-contain"
+                      />
+                    </div>
+                  ) : (
+                    <div className="relative pb-40">
+                      <Image
+                        src={noimage}
+                        layout="fill"
+                        className="object-contain"
+                        alt="product"
+                      />
+                    </div>
+                  )}
                   <SimilarName>{relatedItem.name}</SimilarName>
                 </SimilarProduct>
               </Link>
@@ -257,6 +318,3 @@ const ItemDetail: NextPage = () => {
 };
 
 export default ItemDetail;
-{
-  /* */
-}

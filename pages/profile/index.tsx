@@ -5,6 +5,9 @@ import Layout from "@components/layout";
 import ListButton from "@components/listButton";
 import useSWR from "swr";
 import { User } from "@prisma/client";
+import Image from "next/image";
+import imageUrl from "@libs/client/imageUrl";
+import noAvatar from "../../public/noAvatar.jpeg";
 
 const Wrapper = tw.div`
   mt-16
@@ -15,19 +18,7 @@ const UserWrapper = tw.div`
   flex
 `;
 
-const Avatar = tw.img`
-  w-20
-  h-20
-  bg-slate-300
-  rounded-full
-  mr-4
-`;
-
-const NonAvatar = tw.div`
-  w-20
-  h-20
-  bg-slate-300
-  rounded-full
+const AvatarContainer = tw.div`
   mr-4
 `;
 
@@ -101,11 +92,27 @@ const Profile: NextPage = () => {
       <Wrapper>
         <UserWrapper>
           {data?.currentUser.avatar ? (
-            <Avatar
-              src={`https://imagedelivery.net/F-5OweihFObpZwkkS-kWHQ/${data?.currentUser.avatar}/avatar`}
-            />
+            <AvatarContainer>
+              <Image
+                src={imageUrl(data.currentUser.avatar, "avatar")}
+                className="rounded-full"
+                width={80}
+                height={80}
+                loading="lazy"
+                alt="product"
+              />
+            </AvatarContainer>
           ) : (
-            <NonAvatar />
+            <AvatarContainer>
+              <Image
+                src={noAvatar}
+                placeholder="blur"
+                width={80}
+                height={80}
+                className="rounded-full"
+                alt="noavatar"
+              />
+            </AvatarContainer>
           )}
           <UserInfo>
             <UserName>{data?.currentUser?.name}</UserName>

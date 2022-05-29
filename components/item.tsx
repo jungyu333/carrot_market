@@ -1,8 +1,11 @@
+import imageUrl from "@libs/client/imageUrl";
 import useMutaion from "@libs/client/useMutation";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
 import { useSWRConfig } from "swr";
 import tw from "tailwind-styled-components";
+import noimage from "../public/noimage.png";
 
 const ProductContainer = tw.div<DeleteIconProps>`
   w-full
@@ -23,8 +26,6 @@ const ImgContainer = tw.div`
   rounded-md
   mr-4
 `;
-
-const ProductImage = tw.div``;
 
 const ProductInfoContainer = tw.div`
   flex
@@ -84,6 +85,7 @@ interface ItmeProps {
   heart: number;
   id: number;
   isSell?: boolean;
+  avatar?: string | null;
 }
 
 interface DeleteIconProps {
@@ -100,6 +102,7 @@ export default function Item({
   price,
   heart,
   id,
+  avatar = "",
   isSell = false,
 }: ItmeProps) {
   const [deleteItem, { loading, data }] =
@@ -136,7 +139,23 @@ export default function Item({
         <ProductContainer $isSell={isSell}>
           <ProductInfoContainer>
             <ImgContainer>
-              <ProductImage />
+              {avatar ? (
+                <Image
+                  src={imageUrl(avatar, "public")}
+                  alt="product"
+                  height={64}
+                  width={64}
+                  className="rounded-md object-fill"
+                />
+              ) : (
+                <Image
+                  src={noimage}
+                  alt="product"
+                  height={64}
+                  width={64}
+                  className="rounded-md object-fill"
+                />
+              )}
             </ImgContainer>
             <div>
               <ProductName>{productName}</ProductName>
