@@ -3,13 +3,14 @@ import tw from "tailwind-styled-components";
 import Layout from "@components/layout";
 import useSWR from "swr";
 import { useRouter } from "next/router";
-import { Product, User } from "@prisma/client";
+import { Cart, Product, User } from "@prisma/client";
 import Link from "next/link";
 import useMutaion from "@libs/client/useMutation";
 import Image from "next/image";
 import imageUrl from "@libs/client/imageUrl";
 import noimage from "../../public/noimage.png";
 import noAvatar from "../../public/noAvatar.jpeg";
+import { useEffect } from "react";
 
 const Wrapper = tw.div`
   mt-16
@@ -172,8 +173,19 @@ interface productResponse {
   isLiked: boolean;
 }
 
+interface meResponse {
+  ok: boolean;
+  currentUser: User;
+}
+
+interface CartMutationResult {
+  ok: boolean;
+  newCartProduct?: Cart;
+}
+
 const ItemDetail: NextPage = () => {
   const router = useRouter();
+  const { data: meData } = useSWR<meResponse>("/api/users/me");
   const { data, mutate } = useSWR<productResponse>(
     router.query.id ? `/api/items/${router.query.id}` : null
   );
@@ -188,10 +200,24 @@ const ItemDetail: NextPage = () => {
     mutate({ ...data, isLiked: !data.isLiked }, false);
   };
 
+  const [addCart, { loading: cartLoading, data: cartData }] =
+    useMutaion<CartMutationResult>(`/api/items/${router.query.id}/cart`);
+
+  const onClickCart = () => {
+    if (cartLoading) return;
+    addCart({});
+  };
+
+  useEffect(() => {
+    if (cartData && cartData.ok) alert("장바구니에 담았습니다");
+    if (cartData && !cartData.ok)
+      alert("이미 장바구니에 담겨져 있는 물품입니다");
+  }, [cartData]);
+
   return (
     <Layout canGoBack title="물품 정보" isLogIn>
       <Wrapper>
-        {data?.product.avatar ? (
+        {data?.product?.avatar ? (
           <ImageContainer>
             <Image
               className="object-scale-down"
@@ -273,7 +299,11 @@ const ItemDetail: NextPage = () => {
           </ProductSubInfoContainer>
         </ProductInfoWrapper>
         <ButtonContainer>
-          <Button>Talk to Seller!</Button>
+          {meData?.currentUser?.id !== data?.product?.user.id ? (
+            <Button onClick={onClickCart}>
+              {cartLoading ? "Loading..." : "Add to Cart"}
+            </Button>
+          ) : null}
         </ButtonContainer>
         <DescriptionWrapper>
           <DescriptionHeader>Description!</DescriptionHeader>
