@@ -26,9 +26,9 @@ const Sell: NextPage = () => {
   return (
     <Layout canGoBack isLogIn title="판매 목록">
       <Wrapper>
-        {data?.sellProducts.map((sellProduct) => (
+        {data?.sellProducts?.map((sellProduct) => (
           <Item
-            isSell
+            isDelete
             id={sellProduct?.id}
             key={sellProduct?.id}
             name={sellProduct?.user.name}

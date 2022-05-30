@@ -16,7 +16,7 @@ const ProductContainer = tw.div<DeleteIconProps>`
   px-4
   cursor-pointer
   hover:bg-slate-100
-  ${(p: DeleteIconProps) => (p.$isSell ? "" : "border-b")}
+  ${(p: DeleteIconProps) => (p.$isDelete ? "" : "border-b")}
 `;
 
 const ImgContainer = tw.div`
@@ -68,28 +68,27 @@ const DeleteIcon = tw.span<DeleteIconProps>`
   text-gray-500
   cursor-pointer
   w-1/12
-  
   h-24
   flex
   justify-center
   items-center
   hover:bg-red-500
   hover:text-white
-  ${(p: DeleteIconProps) => (p.$isSell ? "" : "hidden")}
+  ${(p: DeleteIconProps) => (p.$isDelete ? "" : "hidden")}
 `;
 
 interface ItmeProps {
   productName: string;
   name: string;
   price: number;
-  heart: number;
+  heart?: number;
   id: number;
-  isSell?: boolean;
+  isDelete?: boolean;
   avatar?: string | null;
 }
 
 interface DeleteIconProps {
-  $isSell: boolean;
+  $isDelete: boolean;
 }
 
 interface DeleteMutaionResult {
@@ -103,7 +102,7 @@ export default function Item({
   heart,
   id,
   avatar = "",
-  isSell = false,
+  isDelete = false,
 }: ItmeProps) {
   const [deleteItem, { loading, data }] =
     useMutaion<DeleteMutaionResult>("/api/items/itemdel");
@@ -119,7 +118,7 @@ export default function Item({
   }, [mutate, data]);
   return (
     <div className="flex  w-full items-center">
-      <DeleteIcon $isSell={isSell} onClick={() => onClickDelete(id)}>
+      <DeleteIcon $isDelete={isDelete} onClick={() => onClickDelete(id)}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-5 w-5"
@@ -136,7 +135,7 @@ export default function Item({
         </svg>
       </DeleteIcon>
       <Link href={`/items/${id}`}>
-        <ProductContainer $isSell={isSell}>
+        <ProductContainer $isDelete={isDelete}>
           <ProductInfoContainer>
             <ImgContainer>
               {avatar ? (
@@ -164,23 +163,25 @@ export default function Item({
           </ProductInfoContainer>
           <ProductSubInfoContainer>
             <Price>${price}</Price>
-            <div className="flex items-center justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-4 w-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
-              <Heart>{heart}</Heart>
-            </div>
+            {heart ? (
+              <div className="flex items-center justify-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
+                  />
+                </svg>
+                <Heart>{heart}</Heart>
+              </div>
+            ) : null}
           </ProductSubInfoContainer>
         </ProductContainer>
       </Link>

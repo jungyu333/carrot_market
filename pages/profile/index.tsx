@@ -91,7 +91,7 @@ const Profile: NextPage = () => {
     <Layout title="마이페이지" isLogIn hasTabBar>
       <Wrapper>
         <UserWrapper>
-          {data?.currentUser.avatar ? (
+          {data?.currentUser?.avatar ? (
             <AvatarContainer>
               <Image
                 src={imageUrl(data.currentUser.avatar, "avatar")}
@@ -127,7 +127,7 @@ const Profile: NextPage = () => {
           </UserInfo>
         </UserWrapper>
         <ListWrapper>
-          <Link href="/profile/purchase">
+          <Link href="/profile/cart">
             <ListContainer>
               <ListButton>
                 <svg
@@ -145,7 +145,7 @@ const Profile: NextPage = () => {
                   />
                 </svg>
               </ListButton>
-              <ListName>구매목록</ListName>
+              <ListName>장바구니</ListName>
             </ListContainer>
           </Link>
           <Link href="/profile/sell">
@@ -193,9 +193,9 @@ const Profile: NextPage = () => {
         </ListWrapper>
         <span className="  text-2xl font-bold">Introduce!</span>
         <Introduce>
-          {data?.currentUser.introduce === ""
+          {data?.currentUser?.introduce === ""
             ? "Introduce is Non!"
-            : data?.currentUser.introduce}
+            : data?.currentUser?.introduce}
         </Introduce>
       </Wrapper>
     </Layout>
