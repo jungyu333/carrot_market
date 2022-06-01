@@ -39,31 +39,36 @@ const NoCart = tw.span`
   mt-2
 `;
 
-interface cartProductWithUser extends Cart {
+interface ProductWithUser extends Product {
   user: User;
-  product: Product;
+}
+
+interface cartProductWithProduct extends Cart {
+  product: ProductWithUser;
 }
 
 interface CartResponse {
   ok: boolean;
-  cartProducts: cartProductWithUser[];
+  cartProducts: cartProductWithProduct[];
 }
 
 const CartProduct: NextPage = () => {
   const { data } = useSWR<CartResponse>("/api/profile/cart");
-
+  const onClickPurchase = () => {
+    console.log("rndsfs");
+  };
   let total = data?.cartProducts
     ?.map((cartProduct) => cartProduct.product.price)
     .reduce((prev, curr) => prev + curr, 0);
 
   return (
     <Layout canGoBack isLogIn title="장바구니">
-      {data?.cartProducts.length !== 0 ? (
+      {data?.cartProducts?.length !== 0 ? (
         <Wrapper>
           {data?.cartProducts?.map((cartProduct) => (
             <Item
               productName={cartProduct.product.name}
-              name={cartProduct.user.name}
+              name={cartProduct.product.user.name}
               price={cartProduct.product.price}
               id={cartProduct.product.id}
               avatar={cartProduct.product.avatar}

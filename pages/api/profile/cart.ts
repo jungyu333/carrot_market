@@ -16,18 +16,13 @@ async function handler(
       userId: user?.id,
     },
     include: {
-      user: {
-        select: {
-          id: true,
-          name: true,
-        },
-      },
       product: {
         select: {
           id: true,
           name: true,
           avatar: true,
           price: true,
+          user: true,
         },
       },
     },
