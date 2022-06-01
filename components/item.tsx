@@ -179,7 +179,7 @@ export default function Item({
           <ProductSubInfoContainer>
             <Price>${price}</Price>
 
-            {isSell ? (
+            {!isCart ? (
               <div className="flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
