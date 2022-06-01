@@ -83,7 +83,8 @@ interface ItmeProps {
   price: number;
   heart?: number;
   id: number;
-  isDelete?: boolean;
+  isSell?: boolean;
+  isCart?: boolean;
   avatar?: string | null;
 }
 
@@ -102,23 +103,37 @@ export default function Item({
   heart,
   id,
   avatar = "",
-  isDelete = false,
+  isSell = false,
+  isCart = false,
 }: ItmeProps) {
   const [deleteItem, { loading, data }] =
     useMutaion<DeleteMutaionResult>("/api/items/itemdel");
+  const [cartDel, { loading: cartLoading, data: cartData }] =
+    useMutaion("/api/items/cartdel");
   const { mutate } = useSWRConfig();
   const onClickDelete = (id: number) => {
-    if (loading) return;
-    deleteItem(id);
+    if (isSell) {
+      if (loading) return;
+      deleteItem(id);
+    }
+    if (isCart) {
+      if (cartLoading) return;
+      cartDel(id);
+    }
   };
   useEffect(() => {
     if (data && data.ok) {
       mutate("/api/profile/sell");
+    } else if (cartData && cartData.ok) {
+      mutate("/api/profile/cart");
     }
-  }, [mutate, data]);
+  }, [mutate, data, cartData]);
   return (
     <div className="flex  w-full items-center">
-      <DeleteIcon $isDelete={isDelete} onClick={() => onClickDelete(id)}>
+      <DeleteIcon
+        $isDelete={isCart || isSell}
+        onClick={() => onClickDelete(id)}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-5 w-5"
@@ -135,7 +150,7 @@ export default function Item({
         </svg>
       </DeleteIcon>
       <Link href={`/items/${id}`}>
-        <ProductContainer $isDelete={isDelete}>
+        <ProductContainer $isDelete={isCart || isSell}>
           <ProductInfoContainer>
             <ImgContainer>
               {avatar ? (
@@ -163,7 +178,8 @@ export default function Item({
           </ProductInfoContainer>
           <ProductSubInfoContainer>
             <Price>${price}</Price>
-            {heart ? (
+
+            {isSell ? (
               <div className="flex items-center justify-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

@@ -28,7 +28,7 @@ const Sell: NextPage = () => {
       <Wrapper>
         {data?.sellProducts?.map((sellProduct) => (
           <Item
-            isDelete
+            isSell
             id={sellProduct?.id}
             key={sellProduct?.id}
             name={sellProduct?.user.name}
